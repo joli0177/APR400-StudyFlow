@@ -14,76 +14,7 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f0fc3e38-a18c-4b98-a84a-a32c220353fb" name="Changes" comment="Initial commit and push">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow.sln" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/APR400 - StudyFlow.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/App.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Layout/MainLayout.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Layout/MainLayout.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Layout/NavMenu.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Layout/NavMenu.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Layout/ReconnectModal.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Layout/ReconnectModal.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Layout/ReconnectModal.razor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/Counter.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/Error.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/Home.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/NotFound.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/Weather.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Routes.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/_Imports.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Program.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Properties/launchSettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/appsettings.Development.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/appsettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/app.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/favicon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/js/bootstrap.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/js/bootstrap.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map" afterDir="false" />
-    </list>
+    <list default="true" id="f0fc3e38-a18c-4b98-a84a-a32c220353fb" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -172,7 +103,8 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Initial commit and push" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial commit and push" />
+    <MESSAGE value="blablabla" />
+    <option name="LAST_COMMIT_MESSAGE" value="blablabla" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

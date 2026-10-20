@@ -21,7 +21,11 @@
 }
 
 .navbar-brand {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+    text-decoration: none;
 }
 
 .bi {

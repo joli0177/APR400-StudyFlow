@@ -1,0 +1,319 @@
+﻿#Heading-Title{
+    text-align: center;
+    
+}
+/* Rubriken och knappen på samma rad */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/*Kursfitret*/
+.course-filter {
+    margin-top: 1.5rem;
+    padding: .5rem 2.25rem .5rem .75rem;
+    border: 1px solid #d0d4dc;
+    border-radius: 8px;
+    background: white;
+    font-size: .95rem;
+    font-family: inherit;
+    cursor: pointer;
+    min-width: 200px;
+}
+    
+.course-filter:focus {
+    outline: none;
+    border-color: #4f7cff;
+    box-shadow: 0 0 0 3px rgba(79, 124, 255, .15);
+}
+
+
+/* Rutan runt om formuläret */
+.task-form {
+    background: white;
+    border: 1px solid #e2e4e9;
+    border-radius: 10px;
+    padding: 1rem;
+    max-width: 700px;
+}
+
+/*Rubriken för ny uppgift*/
+#title-task {
+    margin-bottom: 1rem;
+    margin-top: 0;
+}
+
+/* Lägg fälten i två kolumner använder ::deep eftersom vi skriver i Blazor kan inte css hitta men med deep så hittar den*/
+.task-form ::deep .describe-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .75rem;
+    margin-bottom: 1rem;
+}
+
+/* Alla inmatningsfält */
+.task-form ::deep input,
+.task-form ::deep select,
+.task-form ::deep textarea {
+    width: 100%;
+    padding: .5rem .75rem;
+    border: 1px solid #d0d4dc;
+    border-radius: 6px;
+    font-size: .95rem;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+/* Beskrivningen tar hela bredden */
+.task-form ::deep textarea {
+    grid-column: 1 / -1;
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* När man klickar i ett fält */
+.task-form ::deep input:focus,
+.task-form ::deep select:focus,
+.task-form ::deep textarea:focus {
+    outline: none;
+    border-color: #4f7cff;
+    box-shadow: 0 0 0 3px rgba(79, 124, 255, .15);
+}
+
+/* Knappen */
+.add-button {
+    background: #4f7cff;
+    color: white;
+    border: 1px solid #4f7cff;
+    border-radius: 10px;
+    padding: .6rem 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.add-button:hover {
+    background: #3b65e0;
+}
+
+/* Fält med fel (t.ex. tom titel) blir röda */
+.task-form ::deep .invalid {
+    border-color: #e5484d;
+}
+.task-form ::deep .validation-errors {
+    color: #e5484d;
+    padding-left: 1rem;
+}
+
+/* Den stora med alla tre rutor i */
+.board {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: #f4f7fb;
+    border-radius: 15px;
+}
+
+/* En kolumn: själva rutan med rubrik och kort i */
+.column {
+    flex: 1;
+    min-width: 0;
+    height: 35rem;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 12px;
+    padding: .5rem 1rem 1rem 1rem;   /* uppe, höger, nere, vänster */
+    min-height: 300px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
+}
+
+.column-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    text-align: center;
+    text-decoration-line: underline;
+}
+
+/* Bara en behållare för korten, ingen egen ruta */
+.column-body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Korten med uppgifter som hamnar i de tre kolumnerna och dess information */
+.card {
+    background: white;
+    border-radius: 12px;
+    border-left: 10px solid var(--accent);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
+    padding: .75rem .9rem;
+    margin-bottom: .75rem;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    cursor: pointer;
+    transition: box-shadow .15s, transform .15s;
+}
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+    transform: translateY(-1px);
+}
+
+/* Övre raden: ikon, titel + datum, pilar */
+.card-top {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.card-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: var(--soft);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.card-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.card-title {
+    font-weight: 600;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-date {
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    color: #666;
+    font-size: .8rem;
+    margin-top: .15rem;
+}
+
+.card-date svg,
+.card-desc svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+/* Nedre raden: kurskod + beskrivning */
+.card-footer {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    min-width: 0;
+}
+
+/*taggen för kurskoden på kortet*/
+.tag {
+    background: var(--soft);
+    color: var(--text);
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .2rem .6rem;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+/* Här är så det blir ... när en beskriving är för lång på kortet */
+.card-desc {
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    color: #666;
+    font-size: .8rem;
+    min-width: 0;
+}
+.card-desc-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Lite effekter för kortens skull: pilarna syns när man håller musen över */
+.card-actions {
+    display: flex;
+    gap: .25rem;
+    opacity: 0;
+    transition: opacity .15s;
+}
+.card:hover .card-actions {
+    opacity: 1;
+}
+.card-actions button {
+    border: none;
+    background: var(--soft);
+    color: var(--text);
+    border-radius: 6px;
+    padding: .2rem .5rem;
+    cursor: pointer;
+}
+
+/* Här är de fyra färgerna som uppgifterna får i kolumnerna */
+.color-0 { --accent: #4f7cff; --soft: #eaf1ff; --text: #1d4f91; }
+.color-1 { --accent: #2fb36d; --soft: #e4f6ec; --text: #1e6b45; }
+.color-2 { --accent: #a35bd6; --soft: #f3e8fb; --text: #5b2381; }
+.color-3 { --accent: #f0705a; --soft: #ffece8; --text: #9b2c1a; }
+
+/* Rutan som öppnas när man klickar på ett kort */
+.task-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, .45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 1000;
+}
+
+.task-modal-box {
+    width: 100%;
+    max-width: 560px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, .2);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-button {
+    background: none;
+    border: 1px solid #e5484d;
+    color: #e5484d;
+    border-radius: 10px;
+    padding: .6rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.delete-button:hover {
+    background: #fdecec;
+}
+
+.cancel-button {
+    background: none;
+    border: none;
+    color: #555;
+    padding: .6rem 1rem;
+    margin-right: .5rem;
+    cursor: pointer;
+}

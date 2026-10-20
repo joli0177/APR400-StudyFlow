@@ -1,0 +1,228 @@
+﻿@page "/kanban"
+@rendermode InteractiveServer
+@inject TaskService TaskService
+
+<PageTitle>Kanban</PageTitle>
+
+@* NY: Rubriken och knappen för ny uppgift på samma rad *@
+<div class="page-header">
+    <h1 id="Heading-Title">Kanban</h1>
+    <button class="add-button" @onclick="OpenNewTask">+ Ny uppgift</button>
+</div>
+
+
+@* Kunna filtrera uppgifterna kanban med kurserna, hämtar namnet & ID från Course egenskaperna *@
+<select class="course-filter" @bind="selectedCourseId" @bind:after="LoadTasksAsync">
+    <option value="">Alla kurser</option>
+    @foreach (var c in courses)
+    {
+        <option value="@c.Id">@c.Name</option>
+    }
+</select>
+
+@*De tre kolumnerna med todo, progress och done *@
+<div class="board">
+    @foreach (var status in Enum.GetValues<KanbanStatus>())
+    {
+        <div class="column">
+            <h2 class="column-title">@StatusName(status)</h2>
+
+            <div class="column-body">
+                @* Här inne händer allt inom kanban kolumen såsom korten, kolumnerna texten etc... *@
+                @foreach (var task in tasks.Where(t => t.Status == status))
+                {
+                    <div class="card color-@(task.CourseId % 4)" @onclick="() => OpenTask(task)">
+                        <div class="card-top">
+                            <div class="card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 10 12 5 2 10l10 5 10-5Z" />
+                                    <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                                </svg>
+                            </div>
+
+                            @*Här är all info i kortet såsom rubrik, datum samt ikonen*@
+                            <div class="card-info">
+                                <div class="card-title">@task.Title</div>
+                                <div class="card-date">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                                        <path d="M16 2v4M8 2v4M3 10h18" />
+                                    </svg>
+                                    @task.Deadline.ToString("d MMM")
+                                </div>
+                            </div>
+
+                            @*Här är kolumnerna för todo, inprogress och done den fixar så pilarna funkar och klickar man hoppar den antingen 1 steg framåt eller 1 steg bakåt*@
+                            <div class="card-actions">
+                                @if (status != KanbanStatus.ToDo)
+                                {
+                                    <button @onclick="() => MoveAsync(task, status - 1)" @onclick:stopPropagation="true">←</button>
+                                }
+                                @if (status != KanbanStatus.Done)
+                                {
+                                    <button @onclick="() => MoveAsync(task, status + 1)" @onclick:stopPropagation="true">→</button>
+                                }
+                            </div>
+                        </div>
+
+                        @*Här är den nedre delen av uppgifstrutan där den får tagen, samt den korta beskrivinen och att det blir som en icon*@
+                        <div class="card-footer">
+                            <span class="tag">@task.Course?.CourseCode</span>
+
+                            @if (!string.IsNullOrWhiteSpace(task.Description))
+                            {
+                                <span class="card-desc">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+                                    </svg>
+                                    <span class="card-desc-text">@task.Description</span>
+                                </span>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@* Rutan som öppnas när man klickar på ett kort, där kan man ändra och ta bort *@
+@* NY: samma ruta används nu även för att skapa en ny uppgift *@
+@if (editTask is not null)
+{
+    <div class="task-modal" @onclick="CloseTask">
+        <div class="task-modal-box task-form" @onclick:stopPropagation="true">
+            <h2 id="title-task">@(IsNew ? "Ny uppgift" : "Redigera uppgift")</h2>
+
+            <EditForm Model="editTask" OnValidSubmit="SaveTaskAsync">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="describe-grid">
+                    <InputText @bind-Value="editTask.Title" placeholder="Titel" />
+                    <InputSelect @bind-Value="editTask.CourseId">
+                        @* NY: "Välj kurs" visas bara när man skapar en ny uppgift *@
+                        @if (IsNew)
+                        {
+                            <option value="0">Välj kurs...</option>
+                        }
+                        @foreach (var c in courses)
+                        {
+                            <option value="@c.Id">@c.Name</option>
+                        }
+                    </InputSelect>
+                    <InputDate @bind-Value="editTask.Deadline" />
+                    <InputSelect @bind-Value="editTask.Status">
+                        @foreach (var s in Enum.GetValues<KanbanStatus>())
+                        {
+                            <option value="@s">@StatusName(s)</option>
+                        }
+                    </InputSelect>
+                    <InputTextArea @bind-Value="editTask.Description" placeholder="Beskrivning (max 300 tecken)" maxlength="300" />
+                </div>
+
+                <div class="modal-actions">
+                    @* NY: Ta bort-knappen visas bara för uppgifter som redan finns *@
+                    @if (!IsNew)
+                    {
+                        <button type="button" class="delete-button" @onclick="DeleteFromModalAsync">Ta bort</button>
+                    }
+                    else
+                    {
+                        <span></span>
+                    }
+                    <div>
+                        <button type="button" class="cancel-button" @onclick="CloseTask">Avbryt</button>
+                        <button type="submit" class="add-button">@(IsNew ? "Lägg till" : "Spara")</button>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@code {
+    private List<StudyTask> tasks = new();
+    private List<Course> courses = new();
+    private int? selectedCourseId;
+
+    // Uppgiften som är öppen i rutan (null = ingen ruta visas)
+    private StudyTask? editTask;
+
+    // NY: En ny uppgift har inget Id än (0), en sparad har 1, 2, 3...
+    private bool IsNew => editTask?.Id == 0;
+
+    // Körs när sidan laddas
+    protected override async Task OnInitializedAsync()
+    {
+        courses = await TaskService.GetCoursesAsync();
+        await LoadTasksAsync();
+    }
+
+    private async Task LoadTasksAsync()
+        => tasks = await TaskService.GetAllAsync(selectedCourseId);
+
+    private async Task MoveAsync(StudyTask task, KanbanStatus newStatus)
+    {
+        await TaskService.MoveAsync(task.Id, newStatus);
+        task.Status = newStatus;
+    }
+
+    // NY: Öppna rutan med en tom uppgift
+    private void OpenNewTask()
+    {
+        editTask = new StudyTask
+        {
+            Deadline = DateTime.Today.AddDays(7),
+            // Om man har filtrerat på en kurs, välj den kursen direkt
+            CourseId = selectedCourseId ?? 0
+        };
+    }
+
+    // Öppna rutan med en KOPIA av uppgiften, så att kortet inte ändras förrän man trycker Spara
+    private void OpenTask(StudyTask task)
+    {
+        editTask = new StudyTask
+        {
+            Id = task.Id,
+            Title = task.Title,
+            Description = task.Description,
+            Deadline = task.Deadline,
+            Status = task.Status,
+            CourseId = task.CourseId
+        };
+    }
+
+    private void CloseTask() => editTask = null;
+
+    // NY: Samma knapp sparar både nya och ändrade uppgifter
+    private async Task SaveTaskAsync()
+    {
+        if (editTask is null) return;
+
+        if (IsNew)
+            await TaskService.AddAsync(editTask);
+        else
+            await TaskService.UpdateAsync(editTask);
+
+        editTask = null;
+        await LoadTasksAsync();
+    }
+
+    private async Task DeleteFromModalAsync()
+    {
+        if (editTask is null) return;
+        await TaskService.DeleteAsync(editTask.Id);
+        editTask = null;
+        await LoadTasksAsync();
+    }
+
+    // Snyggare namn på kolumnerna än enum-namnen
+    private static string StatusName(KanbanStatus status) => status switch
+    {
+        KanbanStatus.ToDo => "Att göra",
+        KanbanStatus.InProgress => "Pågående",
+        KanbanStatus.Done => "Klart",
+        _ => status.ToString()
+    };
+}

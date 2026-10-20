@@ -3,3 +3,12 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+#I Git ignore så tar inte Git med de här sidorna när man pushar
+
+# SQLite-databasen, var och en har sin egen lokalt
+*.db
+*.db-shm
+*.db-wal
+
+# detta läggs här då databasen körs lokalt och ändras hela tiden
+# Så blir intre bra  att pusha den  koden

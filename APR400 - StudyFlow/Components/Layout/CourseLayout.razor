@@ -1,0 +1,20 @@
+@inherits LayoutComponentBase
+
+<div class="layout">
+    <aside class="sidebar">
+        <h2>StudyFlow</h2>
+        
+        <nav>
+            <a href="/CourseView">Mina kurser</a>
+            <a href="/CreateCourseView">Skapa kurs</a>
+            <a href="/EditCourseView">Redigera kurs</a>
+            <button onclick="">
+                Ta bort kurs
+            </button>
+        </nav>
+    </aside>
+    
+    <main class="main-content">
+        @Body
+    </main>
+</div>

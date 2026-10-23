@@ -1,4 +1,129 @@
-@page "/CourseView"
+@page "/courseview"
 @layout CourseLayout
+@rendermode InteractiveServer
+@inject TaskService TaskService
 
-<h1>Mina kurser</h1>
+<PageTitle>Mina kurser</PageTitle>
+
+<div class="courses-page">
+
+    <h1>Mina kurser</h1>
+
+    <div class="courses-list">
+
+        @foreach (var course in courses)
+        {
+            <div class="course-container">
+
+                <div class="course-row">
+
+                    <button class="course-toggle"
+                            @onclick="() => ToggleCourse(course.Id)">
+
+                        <span>
+                            @course.Name - @course.CourseCode
+                        </span>
+
+                        <span class="arrow">
+                            @(expandedCourseId == course.Id ? "▲" : "▼")
+                        </span>
+
+                    </button>
+
+                    <button class="delete-button"
+                            title="Ta bort kurs"
+                            @onclick="() => DeleteCourseAsync(course.Id)">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M3 6h18" />
+                            <path d="M8 6V4h8v2" />
+                            <path d="M5 6l1 15h12l1-15" />
+                            <path d="M10 10v7M14 10v7" />
+
+                        </svg>
+
+                    </button>
+
+                </div>
+
+                @if (expandedCourseId == course.Id)
+                {
+                    <div class="course-details">
+
+                        <p>
+                            <strong>Kursnamn:</strong>
+                            @course.Name
+                        </p>
+
+                        <p>
+                            <strong>Kurskod:</strong>
+                            @course.CourseCode
+                        </p>
+
+                        <a href="/kanban">
+                            Visa uppgifter
+                        </a>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+@code {
+
+    // Lista som innehåller alla kurser
+    private List<Course> courses = new();
+
+    // Vilken kurs som är utvecklad
+    private int? expandedCourseId;
+
+    // Körs när sidan laddas
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCoursesAsync();
+    }
+
+    // Hämtar kurser från databasen
+    private async Task LoadCoursesAsync()
+    {
+        courses = await TaskService.GetCoursesAsync();
+    }
+
+    // Öppnar eller stänger kursens information
+    private void ToggleCourse(int courseId)
+    {
+        if (expandedCourseId == courseId)
+        {
+            expandedCourseId = null;
+        }
+        else
+        {
+            expandedCourseId = courseId;
+        }
+    }
+
+    // Tar bort en kurs
+    private async Task DeleteCourseAsync(int courseId)
+    {
+        // Kräver att metoden finns i TaskService
+        await TaskService.DeleteAsync(courseId);
+
+        if (expandedCourseId == courseId)
+        {
+            expandedCourseId = null;
+        }
+
+        await LoadCoursesAsync();
+    }
+}

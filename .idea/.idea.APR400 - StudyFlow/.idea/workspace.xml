@@ -21,28 +21,45 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0fc3e38-a18c-4b98-a84a-a32c220353fb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/CourseView.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/CreateCourseView.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/EditCourseView.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/KanbanView.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Layout/CourseLayout.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/CourseView.razor.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APR400 - StudyFlow/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APR400 - StudyFlow/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/Counter.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/Error.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/MainView.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/NotFound.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/Weather.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Routes.razor" beforeDir="false" afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Routes.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Layout/CourseLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Layout/CourseLayout.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Layout/KanbanLayout.razor" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Layout/NavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Layout/NavMenu.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Layout/NavMenu.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Layout/NavMenu.razor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/CourseView.razor" beforeDir="false" afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/CourseView.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/KanbanView.razor" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/MainView.razor" beforeDir="false" afterPath="$PROJECT_DIR$/APR400 - StudyFlow/Components/Pages/MainView.razor" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DatabaseLocalColorSettings">
+    <colors>
+      <entry key="5d2c1221-789c-4139-9a64-b591486d2e0b" value="" />
+    </colors>
+  </component>
+  <component name="DpaMonitoringSettings">
+    <option name="firstShow" value="false" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="master" />
+  </component>
   <component name="Git.Settings">
     <option name="INCOMING_COMMITS_CHECK_STRATEGY" value="FETCH" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="cource_view" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -80,26 +97,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.APR400 - StudyFlow: http.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "cidr.known.project.marker": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "course__view",
-    "git.auto.fetch.suggestion.counter": "3",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.APR400 - StudyFlow: http.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.APR400 - StudyFlow: https.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;course__view&quot;,
+    &quot;git.auto.fetch.suggestion.counter&quot;: &quot;3&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlite&quot;
+    ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.APR400 - StudyFlow: http">
     <configuration name="APR400 - StudyFlow: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/APR400 - StudyFlow/APR400 - StudyFlow.csproj" />
@@ -245,6 +270,9 @@
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.db" />
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>

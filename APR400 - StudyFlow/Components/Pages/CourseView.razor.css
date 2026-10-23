@@ -1,0 +1,110 @@
+.courses-page {
+    width: 100%;
+    max-width: 570px;
+    margin: 0 auto;
+    padding-top: 40px;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    font-size: 40px;
+    font-weight: normal;
+    margin-bottom: 32px;
+}
+
+.courses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.course-container {
+    width: 100%;
+}
+
+.course-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid #777;
+    background-color: white;
+}
+
+.course-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 18px;
+    flex: 1;
+    min-width: 0;
+    padding: 11px 13px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    font-size: 15px;
+    color: black;
+}
+
+.course-toggle span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.arrow {
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.delete-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-left: auto;
+    padding: 9px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: black;
+}
+
+.delete-button svg {
+    width: 22px;
+    height: 22px;
+}
+
+.delete-button:hover {
+    color: #c62828;
+}
+
+.course-details {
+    padding: 18px;
+    border: 1px solid #777;
+    border-top: none;
+    background-color: #fafafa;
+    font-size: 14px;
+}
+
+.course-details p {
+    margin: 0 0 12px;
+}
+
+.course-details a {
+    color: black;
+    text-decoration: underline;
+}
+
+@media (max-width: 650px) {
+    .courses-page {
+        padding: 25px 15px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+}

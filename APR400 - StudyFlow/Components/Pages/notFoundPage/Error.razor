@@ -1,0 +1,24 @@
+﻿@page "/Error"
+@using System.Diagnostics
+@*En sida som vissas om  en sida strular eller blir fel, är standardkod*@
+
+<PageTitle>Något gick fel</PageTitle>
+
+<h1>Något gick fel 😕</h1>
+<p>Ett oväntat fel uppstod. Försök ladda om sidan.</p>
+
+@if (!string.IsNullOrEmpty(RequestId))
+{
+    <p><small>Fel-ID: <code>@RequestId</code></small></p>
+}
+
+@code {
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    private string? RequestId { get; set; }
+
+    // Ett ID för felet, så att man kan hitta det i loggen
+    protected override void OnInitialized() =>
+        RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+}

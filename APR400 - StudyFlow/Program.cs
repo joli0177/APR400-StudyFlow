@@ -8,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+// Denna kod snut skrev av AI för hjälp med kopplingen
+// OpenAI. (2026). ChatGPT (Version 5.3) [Stor språkmodell]. https://chat.openai.com/
 // Här kopplas SQLite-databsen
 builder.Services.AddDbContextFactory<StudyFlowContext>(options =>
     options.UseSqlite("Data Source=studyflow.db"));

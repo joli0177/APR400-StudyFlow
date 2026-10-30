@@ -1,3 +1,59 @@
+/*
+    Färger som är generella över hela StudyFlow
+*/
+
+:root {
+    /* Huvudfärger */
+    --primary: #C91920; /* DEN PRIMÄRA FÄRGEN, KNAPPAR LÄNKAR ETC */
+    --primary-dark: #A80F17; /* MÖRKARE RÖD VID HOVER */
+    --primary-light: #FCEBEC; /* LJUSROSA BAKGRUND */
+    --progress-bar: #F7DDDF; /* BAKGRUND PÅ PROGRESSBAR */
+
+    /* Bakgrundsfärger */
+    --bg-page: #F8F9FA; /* SIDBAKGRUNDEN */
+    --bg-card: #FFFFFF; /* VIT BAKGRUND PÅ KORT OCH RUTOR */
+
+    /* Text */
+    --text-main: #171B26; /* MÖRK TEXT */
+    --text-muted: #6B7280; /* SEKUNDÄR TEXT, DATUM ETC */
+
+    /* Fel och ta bort */
+    --danger: #A80F17;
+    --danger-soft: #FCEBEC;
+
+    /* Detaljer */
+    --border: #E5E7EB;
+    --shadow: 0 1px 4px rgba(0, 0, 0, .08);
+    --radius: 12px;
+
+}
+    /* Kursfärgerna, används på både Kanban och dashboarden */
+
+    .color-0 {
+        --accent: #C91920;
+        --soft: #FCEBEC;
+        --text: #A80F17;
+    }
+
+    .color-1 {
+        --accent: #2fb36d;
+        --soft: #e4f6ec;
+        --text: #1e6b45;
+    }
+
+    .color-2 {
+        --accent: #a35bd6;
+        --soft: #f3e8fb;
+        --text: #5b2381;
+    }
+
+    .color-3 {
+        --accent: #f0a020;
+        --soft: #fff4e0;
+        --text: #8a5300;
+    }
+
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }

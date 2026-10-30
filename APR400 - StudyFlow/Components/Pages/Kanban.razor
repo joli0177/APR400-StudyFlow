@@ -8,7 +8,10 @@
 
 @* NY: Rubriken och knappen för ny uppgift på samma rad *@
 <div class="page-header">
-    <h1 id="Heading-Title">Kanban</h1>
+    <div>
+        <h1 id="Heading-Title">Kanban</h1>
+        <p class="page-subtitle">Lägg in dina uppgifter och följ dem här.</p>
+    </div>
     <button class="add-button" @onclick="OpenNewTask">+ Ny uppgift</button>
 </div>
 
@@ -26,9 +29,35 @@
 <div class="board">
     @foreach (var status in Enum.GetValues<KanbanStatus>())
     {
-        <div class="column">
-            <h2 class="column-title">@StatusName(status)</h2>
-
+            <div class="column status-@(status.ToString().ToLower())">
+                @* Rubriken högst upp i kolumnen: ikon, namn och antal uppgifter *@
+                <div class="column-header">
+                    <span class="column-icon">
+                        @switch (status)
+                        {
+                            case KanbanStatus.ToDo:
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="8" y="2" width="8" height="4" rx="1" />
+                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                                </svg>
+                                break;
+                            case KanbanStatus.InProgress:
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                                </svg>
+                                break;
+                            case KanbanStatus.Done:
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 6 9 17l-5-5" />
+                                </svg>
+                                break;
+                        }
+                    </span>
+                    <h2 class="column-title">@StatusName(status)</h2>
+                    <span class="column-count">@tasks.Count(t => t.Status == status)</span>
+                </div>
+                
+            
             <div class="column-body">
                 @* Här inne händer allt inom kanban kolumen såsom korten, kolumnerna texten etc... *@
                 @foreach (var task in tasks.Where(t => t.Status == status))
@@ -37,8 +66,8 @@
                         <div class="card-top">
                             <div class="card-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M22 10 12 5 2 10l10 5 10-5Z" />
-                                    <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                                    <path d="M22 10 12 5 2 10l10 5 10-5Z"/>
+                                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
                                 </svg>
                             </div>
 
@@ -47,8 +76,8 @@
                                 <div class="card-title">@task.Title</div>
                                 <div class="card-date">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="3" y="4" width="18" height="18" rx="2" />
-                                        <path d="M16 2v4M8 2v4M3 10h18" />
+                                        <rect x="3" y="4" width="18" height="18" rx="2"/>
+                                        <path d="M16 2v4M8 2v4M3 10h18"/>
                                     </svg>
                                     @task.Deadline.ToString("d MMM")
                                 </div>
@@ -75,7 +104,7 @@
                             {
                                 <span class="card-desc">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+                                        <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
                                     </svg>
                                     <span class="card-desc-text">@task.Description</span>
                                 </span>

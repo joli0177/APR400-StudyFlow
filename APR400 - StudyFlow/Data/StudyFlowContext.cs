@@ -7,22 +7,35 @@ public class StudyFlowContext : DbContext
 {
     public StudyFlowContext(DbContextOptions<StudyFlowContext> options) : base(options) { }
 
-    // DbSet blir två seperata tabeller en kurs och en uppgifter
+    // Varje DbSet blir en tabell i databasen
     public DbSet<Course> Courses => Set<Course>();
     public DbSet<StudyTask> Tasks => Set<StudyTask>();
+    public DbSet<Examination> Examinations => Set<Examination>(); // NY
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Här skapas 1:N kopplinegn då 1 kurs kan ha flera uppgifter men 1 uppgift har bara 1 kurs. 
+        // 1:N, en kurs kan ha många uppgifter men en uppgift har bara en kurs
         modelBuilder.Entity<StudyTask>()
             .HasOne(t => t.Course)
             .WithMany(c => c.Tasks)
             .HasForeignKey(t => t.CourseId)
-            .OnDelete(DeleteBehavior.Cascade); // här tas både kurs och uppgifter bort då de är koppplade 
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Spara status som text ("InProgress") i stället för en siffra
         modelBuilder.Entity<StudyTask>()
             .Property(t => t.Status)
+            .HasConversion<string>();
+
+        // NY: 1:N, en kurs kan ha många examinationer men en examination har bara en kurs
+        modelBuilder.Entity<Examination>()
+            .HasOne(e => e.Course)
+            .WithMany(c => c.Examinations)
+            .HasForeignKey(e => e.CourseId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // NY: Spara examinationstypen som text ("Exam") i stället för en siffra
+        modelBuilder.Entity<Examination>()
+            .Property(e => e.Type)
             .HasConversion<string>();
     }
 }

@@ -45,10 +45,40 @@ namespace APR400___StudyFlow.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("APR400___StudyFlow.Models.Examination", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Examinations");
+                });
+
             modelBuilder.Entity("APR400___StudyFlow.Models.StudyTask", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Color")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("CourseId")
@@ -75,6 +105,17 @@ namespace APR400___StudyFlow.Migrations
                     b.ToTable("Tasks");
                 });
 
+            modelBuilder.Entity("APR400___StudyFlow.Models.Examination", b =>
+                {
+                    b.HasOne("APR400___StudyFlow.Models.Course", "Course")
+                        .WithMany("Examinations")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("APR400___StudyFlow.Models.StudyTask", b =>
                 {
                     b.HasOne("APR400___StudyFlow.Models.Course", "Course")
@@ -88,6 +129,8 @@ namespace APR400___StudyFlow.Migrations
 
             modelBuilder.Entity("APR400___StudyFlow.Models.Course", b =>
                 {
+                    b.Navigation("Examinations");
+
                     b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618

@@ -13,6 +13,7 @@ public class StudyTask
 
     public KanbanStatus Status { get; set; } = KanbanStatus.ToDo;
     
+	public TaskColor Color { get; set; } = TaskColor.Red;
     // Främmandde nyckel för att koplla kursen till uppgiften
     [Range(1, int.MaxValue, ErrorMessage = "Välj en kurs")]
     public int CourseId { get; set; }

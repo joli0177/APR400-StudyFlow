@@ -2,11 +2,11 @@
 @rendermode InteractiveServer
 @inject TaskService TaskService
 
-@*Här är den viusella kanban*@
+@*Här är den visuella kanban*@
 
 <PageTitle>Kanban</PageTitle>
 
-@* NY: Rubriken och knappen för ny uppgift på samma rad *@
+@* Rubriken och knappen för ny uppgift på samma rad *@
 <div class="page-header">
     <div>
         <h1 id="Heading-Title">Kanban</h1>
@@ -29,45 +29,45 @@
 <div class="board">
     @foreach (var status in Enum.GetValues<KanbanStatus>())
     {
-            <div class="column status-@(status.ToString().ToLower())">
-                @* Rubriken högst upp i kolumnen: ikon, namn och antal uppgifter *@
-                <div class="column-header">
-                    <span class="column-icon">
-                        @switch (status)
-                        {
-                            case KanbanStatus.ToDo:
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="8" y="2" width="8" height="4" rx="1" />
-                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-                                </svg>
-                                break;
-                            case KanbanStatus.InProgress:
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-                                </svg>
-                                break;
-                            case KanbanStatus.Done:
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M20 6 9 17l-5-5" />
-                                </svg>
-                                break;
-                        }
-                    </span>
-                    <h2 class="column-title">@StatusName(status)</h2>
-                    <span class="column-count">@tasks.Count(t => t.Status == status)</span>
-                </div>
-                
-            
+        <div class="column status-@(status.ToString().ToLower())">
+            @* Rubriken högst upp i kolumnen: ikon, namn och antal uppgifter *@
+            <div class="column-header">
+                <span class="column-icon">
+                    @switch (status)
+                    {
+                        case KanbanStatus.ToDo:
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="8" y="2" width="8" height="4" rx="1" />
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                            </svg>
+                            break;
+                        case KanbanStatus.InProgress:
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                            </svg>
+                            break;
+                        case KanbanStatus.Done:
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5" />
+                            </svg>
+                            break;
+                    }
+                </span>
+                <h2 class="column-title">@StatusName(status)</h2>
+                <span class="column-count">@tasks.Count(t => t.Status == status)</span>
+            </div>
+
             <div class="column-body">
-                @* Här inne händer allt inom kanban kolumen såsom korten, kolumnerna texten etc... *@
+                @* Här inne händer allt inom kanban kolumnen såsom korten, kolumnerna texten etc... *@
                 @foreach (var task in tasks.Where(t => t.Status == status))
                 {
-                    <div class="card color-@(task.CourseId % 4)" @onclick="() => OpenTask(task)">
+                    @* Kortet får färgen som användaren har valt *@
+                    <div class="card color-@(task.Color.ToString().ToLower())" @onclick="() => OpenTask(task)">
                         <div class="card-top">
                             <div class="card-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M22 10 12 5 2 10l10 5 10-5Z"/>
-                                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                                    <path d="M22 10 12 5 2 10l10 5 10-5Z" />
+                                    <path d="M6 12v5c3 3 9 3 12 0v-5" />
                                 </svg>
                             </div>
 
@@ -76,14 +76,14 @@
                                 <div class="card-title">@task.Title</div>
                                 <div class="card-date">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="3" y="4" width="18" height="18" rx="2"/>
-                                        <path d="M16 2v4M8 2v4M3 10h18"/>
+                                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                                        <path d="M16 2v4M8 2v4M3 10h18" />
                                     </svg>
                                     @task.Deadline.ToString("d MMM")
                                 </div>
                             </div>
 
-                            @*Här är kolumnerna för todo, inprogress och done den fixar så pilarna funkar och klickar man hoppar den antingen 1 steg framåt eller 1 steg bakåt*@
+                            @*Här är pilarna för todo, inprogress och done, klickar man hoppar den antingen 1 steg framåt eller 1 steg bakåt*@
                             <div class="card-actions">
                                 @if (status != KanbanStatus.ToDo)
                                 {
@@ -96,7 +96,7 @@
                             </div>
                         </div>
 
-                        @*Här är den nedre delen av uppgifstrutan där den får tagen, samt den korta beskrivinen och att det blir som en icon*@
+                        @*Här är den nedre delen av uppgiftsrutan där den får taggen, samt den korta beskrivningen och att det blir som en ikon*@
                         <div class="card-footer">
                             <span class="tag">@task.Course?.CourseCode</span>
 
@@ -104,7 +104,7 @@
                             {
                                 <span class="card-desc">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
+                                        <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
                                     </svg>
                                     <span class="card-desc-text">@task.Description</span>
                                 </span>
@@ -118,7 +118,7 @@
 </div>
 
 @* Rutan som öppnas när man klickar på ett kort, där kan man ändra och ta bort *@
-@* NY: samma ruta används nu även för att skapa en ny uppgift *@
+@* Samma ruta används även för att skapa en ny uppgift *@
 @if (editTask is not null)
 {
     <div class="task-modal" @onclick="CloseTask">
@@ -132,7 +132,7 @@
                 <div class="describe-grid">
                     <InputText @bind-Value="editTask.Title" placeholder="Titel" />
                     <InputSelect @bind-Value="editTask.CourseId">
-                        @* NY: "Välj kurs" visas bara när man skapar en ny uppgift *@
+                        @* "Välj kurs" visas bara när man skapar en ny uppgift *@
                         @if (IsNew)
                         {
                             <option value="0">Välj kurs...</option>
@@ -142,7 +142,10 @@
                             <option value="@c.Id">@c.Name</option>
                         }
                     </InputSelect>
-                    <InputDate @bind-Value="editTask.Deadline" />
+                    <label class="field">
+                        <span>Deadline</span>
+                        <InputDate @bind-Value="editTask.Deadline" />
+                    </label>
                     <InputSelect @bind-Value="editTask.Status">
                         @foreach (var s in Enum.GetValues<KanbanStatus>())
                         {
@@ -152,8 +155,20 @@
                     <InputTextArea @bind-Value="editTask.Description" placeholder="Beskrivning (max 300 tecken)" maxlength="300" />
                 </div>
 
+                @* Välj färg på uppgiften *@
+                <div class="color-picker">
+                    <span class="color-label">Färg</span>
+                    @foreach (var color in Enum.GetValues<TaskColor>())
+                    {
+                        <button type="button"
+                                class="color-swatch color-@(color.ToString().ToLower()) @(editTask!.Color == color ? "selected" : "")"
+                                @onclick="() => editTask!.Color = color"
+                                title="@color"></button>
+                    }
+                </div>
+
                 <div class="modal-actions">
-                    @* NY: Ta bort-knappen visas bara för uppgifter som redan finns *@
+                    @* Ta bort-knappen visas bara för uppgifter som redan finns *@
                     @if (!IsNew)
                     {
                         <button type="button" class="delete-button" @onclick="DeleteFromModalAsync">Ta bort</button>
@@ -180,7 +195,7 @@
     // Uppgiften som är öppen i rutan (null = ingen ruta visas)
     private StudyTask? editTask;
 
-    // NY: En ny uppgift har inget Id än (0), en sparad har 1, 2, 3...
+    // En ny uppgift har inget Id än (0), en sparad har 1, 2, 3...
     private bool IsNew => editTask?.Id == 0;
 
     // Körs när sidan laddas
@@ -199,7 +214,7 @@
         task.Status = newStatus;
     }
 
-    // NY: Öppna rutan med en tom uppgift
+    // Öppna rutan med en tom uppgift
     private void OpenNewTask()
     {
         editTask = new StudyTask
@@ -220,13 +235,14 @@
             Description = task.Description,
             Deadline = task.Deadline,
             Status = task.Status,
-            CourseId = task.CourseId
+            CourseId = task.CourseId,
+            Color = task.Color   // Färgen följer med, annars nollställs den
         };
     }
 
     private void CloseTask() => editTask = null;
 
-    // NY: Samma knapp sparar både nya och ändrade uppgifter
+    // Samma knapp sparar både nya och ändrade uppgifter
     private async Task SaveTaskAsync()
     {
         if (editTask is null) return;

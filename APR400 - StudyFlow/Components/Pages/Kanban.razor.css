@@ -329,11 +329,6 @@
     cursor: pointer;
 }
 
-/* Här är de fyra färgerna som uppgifterna får i kolumnerna */
-.color-0 { --accent: #4f7cff; --soft: #eaf1ff; --text: #1d4f91; }
-.color-1 { --accent: #2fb36d; --soft: #e4f6ec; --text: #1e6b45; }
-.color-2 { --accent: #a35bd6; --soft: #f3e8fb; --text: #5b2381; }
-.color-3 { --accent: #f0705a; --soft: #ffece8; --text: #9b2c1a; }
 
 /* Rutan som öppnas när man klickar på ett kort */
 .task-modal {
@@ -379,4 +374,37 @@
     padding: .6rem 1rem;
     margin-right: .5rem;
     cursor: pointer;
+}
+
+/* Färgväljaren i modalen */
+.color-picker {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: 1rem;
+}
+.color-label {
+    color: var(--text-muted);
+    margin-right: .25rem;
+}
+.color-swatch {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border-radius: 50%;
+    background: var(--soft);
+    border: 3px solid var(--accent);
+    cursor: pointer;
+}
+/* Den valda färgen får en ring runt sig */
+.color-swatch.selected {
+    box-shadow: 0 0 0 3px white, 0 0 0 5px var(--accent);
+}
+
+.task-form ::deep .describe-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .75rem;
+    margin-bottom: 1rem;
+    align-items: end;   /* NY: rutorna sträcks inte ut, de ställer sig längst ner på raden */
 }

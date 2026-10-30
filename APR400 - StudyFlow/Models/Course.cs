@@ -11,4 +11,6 @@ public class Course
 
     // En kurs har många uppgifter
     public List<StudyTask> Tasks { get; set; } = new(); // En genereics lista då den ska innehålla uppgifter
+    // En kurs har många examinationer
+    public List<Examination> Examinations { get; set; } = new(); 
 }

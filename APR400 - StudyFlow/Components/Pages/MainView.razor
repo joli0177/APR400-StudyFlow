@@ -1,7 +1,361 @@
-﻿@inherits LayoutComponentBase
+@page "/"
+@using System.Globalization
+@inject DashboardService DashboardService
 
-<div class="page">
-    <main>
-        @Body
-    </main>
+<PageTitle>Dashboard</PageTitle>
+
+@* Hälsningen och dagens datum högst upp *@
+<div class="dash-header">
+    <div>
+        <h1 class="greeting">@Greeting(), <span>Nellie</span> 👋</h1>
+        <p class="subtitle">Här är din studieöversikt för idag.</p>
+    </div>
+
+    <div class="date-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <path d="M16 2v4M8 2v4M3 10h18" />
+        </svg>
+        <div>
+            <span class="date-day">@Capitalize(DateTime.Today.ToString("dddd", sv))</span>
+            <span class="date-full">@DateTime.Today.ToString("d MMMM yyyy", sv)</span>
+        </div>
+    </div>
 </div>
+
+@* Två kolumner: vänster för översikt och framsteg, höger för uppgifter och examinationer *@
+<div class="dash-grid">
+
+    <div class="dash-left">
+
+        @* Studieöversikt: fyra siffror *@
+        <section class="panel">
+            <div class="panel-heading">
+                <h2>Studieöversikt</h2>
+                <p>En snabb överblick över dina kurser och uppgifter.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                        </svg>
+                    </span>
+                    <span class="stat-number">@activeCourses</span>
+                    <span class="stat-label">Aktiva kurser</span>
+                </div>
+
+                <div class="stat-box">
+                    <span class="stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+                            <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                            <path d="M16 13H8M16 17H8M10 9H8" />
+                        </svg>
+                    </span>
+                    <span class="stat-number">@totalTasks</span>
+                    <span class="stat-label">Totala uppgifter</span>
+                </div>
+
+                <div class="stat-box">
+                    <span class="stat-icon green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 6 9 17l-5-5" />
+                        </svg>
+                    </span>
+                    <span class="stat-number">@doneTasks</span>
+                    <span class="stat-label">Klara uppgifter</span>
+                </div>
+
+                <div class="stat-box">
+                    <span class="stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 8v4M12 16h.01" />
+                        </svg>
+                    </span>
+                    <span class="stat-number @(overdueTasks > 0 ? "danger" : "")">@overdueTasks</span>
+                    <span class="stat-label">Försenade uppgifter</span>
+                </div>
+            </div>
+        </section>
+
+        @* Totala studieframsteg: en stor progressbar *@
+        <section class="panel">
+            <div class="panel-header">
+                <span class="panel-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 20V10M18 20V4M6 20v-4" />
+                    </svg>
+                </span>
+                <div class="panel-heading">
+                    <h2>Totala studieframsteg</h2>
+                    <p>Så här långt har du kommit med alla dina uppgifter.</p>
+                </div>
+                <div class="progress-summary">
+                    <span class="big-percent">@TotalPercent %</span>
+                    <span>@doneTasks av @totalTasks uppgifter klara</span>
+                </div>
+            </div>
+
+            <div class="progress large">
+                <div class="progress-fill" style="width: @TotalPercent%"></div>
+            </div>
+
+            <div class="legend">
+                <span><i class="dot todo"></i> Att göra (@todoCount)</span>
+                <span><i class="dot progress-dot"></i> Pågår (@inProgressCount)</span>
+                <span><i class="dot done"></i> Klara (@doneTasks)</span>
+            </div>
+        </section>
+
+        @* Framsteg per kurs: en rad per kurs *@
+        <section class="panel">
+            <div class="panel-header">
+                <span class="panel-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10 12 5 2 10l10 5 10-5Z" />
+                        <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                    </svg>
+                </span>
+                <div class="panel-heading">
+                    <h2>Framsteg per kurs</h2>
+                    <p>Så här ligger du till i dina kurser.</p>
+                </div>
+            </div>
+
+            @foreach (var course in courses)
+            {
+                <div class="course-row">
+                    <span class="course-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                        </svg>
+                    </span>
+                    <div class="course-info">
+                        <strong>@course.Name</strong>
+                        <div class="progress">
+                            <div class="progress-fill" style="width: @Progress(course)%"></div>
+                        </div>
+                    </div>
+                    <div class="course-percent">
+                        <strong>@Progress(course) %</strong>
+                        <span>@course.Tasks.Count(t => t.Status == KanbanStatus.Done) av @course.Tasks.Count</span>
+                    </div>
+                </div>
+            }
+        </section>
+
+    </div>
+
+    <div class="dash-right">
+
+        @* Mina uppgifter: allt som kommer från Kanban *@
+        <section class="panel">
+            <div class="panel-header">
+                <span class="panel-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <circle cx="12" cy="12" r="6" />
+                        <circle cx="12" cy="12" r="2" />
+                    </svg>
+                </span>
+                <div class="panel-heading">
+                    <h2>Mina uppgifter</h2>
+                    <p>Från din Kanban.</p>
+                </div>
+                <a href="kanban" class="panel-link">Visa alla</a>
+            </div>
+
+            @* Del 1: idag och försenat *@
+            <h3 class="sub-heading">Behöver uppmärksamhet <span class="sub-count">@focus.Count</span></h3>
+
+            @if (focus.Count == 0)
+            {
+                <p class="empty">Inget som brådskar idag 🎉</p>
+            }
+
+            @foreach (var task in focus)
+            {
+                <a href="kanban" class="focus-row">
+                    <span class="focus-circle"></span>
+                    <div class="deadline-info">
+                        <strong>@task.Title</strong>
+                        <span>@task.Course?.Name</span>
+                    </div>
+                    <span class="focus-tag @(IsOverdue(task) ? "overdue" : "")">
+                        @(IsOverdue(task) ? "Försenad" : "Idag")
+                    </span>
+                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m9 18 6-6-6-6" />
+                    </svg>
+                </a>
+            }
+
+            @* Del 2: kommande *@
+            <h3 class="sub-heading">Kommande <span class="sub-count">@upcoming.Count</span></h3>
+
+            @if (upcoming.Count == 0)
+            {
+                <p class="empty">Inga kommande uppgifter.</p>
+            }
+
+            @foreach (var task in upcoming)
+            {
+                <a href="kanban" class="focus-row">
+                    <span class="focus-circle muted"></span>
+                    <div class="deadline-info">
+                        <strong>@task.Title</strong>
+                        <span>@task.Course?.Name</span>
+                    </div>
+                    <span class="row-date">@task.Deadline.ToString("d MMM", sv).TrimEnd('.')</span>
+                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m9 18 6-6-6-6" />
+                    </svg>
+                </a>
+            }
+        </section>
+
+        @* Examinationer: tentor och inlämningar från kurserna *@
+        <section class="panel">
+            <div class="panel-header">
+                <span class="panel-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10 12 5 2 10l10 5 10-5Z" />
+                        <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                    </svg>
+                </span>
+                <div class="panel-heading">
+                    <h2>Examinationer</h2>
+                    <p>Tentor och inlämningar från dina kurser.</p>
+                </div>
+                <span class="badge">@exams.Count st</span>
+            </div>
+
+            @foreach (var exam in exams.OrderBy(e => e.Date))
+            {
+                <div class="exam-row">
+                    <div class="date-block">
+                        <span class="date-num">@exam.Date.Day</span>
+                        <span class="date-month">@exam.Date.ToString("MMM", sv).TrimEnd('.')</span>
+                    </div>
+                    <div class="deadline-info">
+                        <strong>@exam.Title</strong>
+                        <span>@exam.Course?.Name · @DaysLeftText(exam.Date)</span>
+                    </div>
+                    <span class="exam-tag type-@(exam.Type.ToString().ToLower())">@TypeName(exam.Type)</span>
+                </div>
+            }
+        </section>
+
+    </div>
+
+</div>
+
+@code {
+    // Svenska datum oavsett vilken dator appen körs på
+    private static readonly CultureInfo sv = new("sv-SE");
+
+    // Data från databasen
+    private List<Course> courses = new();
+    private List<StudyTask> focus = new();
+    private List<StudyTask> upcoming = new();
+
+    // Siffrorna till Studieöversikt och Totala studieframsteg
+    private int activeCourses;
+    private int totalTasks;
+    private int doneTasks;
+    private int todoCount;
+    private int inProgressCount;
+    private int overdueTasks;
+
+    // Andel klara av alla uppgifter, i procent. 0 om det inte finns några uppgifter.
+    private int TotalPercent => totalTasks == 0 ? 0 : doneTasks * 100 / totalTasks;
+
+    // TILLFÄLLIGT: hårdkodade examinationer för att se designen.
+    // Byts mot riktig data från databasen när kurssidan kan lägga in examinationer.
+    private List<Examination> exams = new()
+    {
+        new() { Title = "Projektinlämning", Date = DateTime.Today.AddDays(9),  Type = ExaminationType.Assignment, Course = new() { Name = "Avancerad C#" } },
+        new() { Title = "Salstenta",        Date = DateTime.Today.AddDays(13), Type = ExaminationType.Exam,       Course = new() { Name = "Databaser" } },
+        new() { Title = "Seminarium",       Date = DateTime.Today.AddDays(16), Type = ExaminationType.Seminar,    Course = new() { Name = "Systemutveckling" } },
+        new() { Title = "Reflektion",       Date = DateTime.Today.AddDays(29), Type = ExaminationType.Assignment, Course = new() { Name = "Webbutveckling" } }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        // 1. Hämta kurserna med deras uppgifter
+        courses = await DashboardService.GetCoursesWithTasksAsync();
+
+        // 2. Plocka ut alla uppgifter från alla kurser till en enda lista
+        var allTasks = courses.SelectMany(c => c.Tasks).ToList();
+
+        // 3. Siffrorna till Studieöversikt och Totala studieframsteg
+        activeCourses = courses.Count(c => c.EndDate.Date >= DateTime.Today);
+        totalTasks = allTasks.Count;
+        doneTasks = allTasks.Count(t => t.Status == KanbanStatus.Done);
+        todoCount = allTasks.Count(t => t.Status == KanbanStatus.ToDo);
+        inProgressCount = allTasks.Count(t => t.Status == KanbanStatus.InProgress);
+        overdueTasks = allTasks.Count(t => t.Status != KanbanStatus.Done && t.Deadline.Date < DateTime.Today);
+
+        // 4. Uppgifter som inte är klara och har deadline idag eller tidigare
+        focus = allTasks
+            .Where(t => t.Status != KanbanStatus.Done && t.Deadline.Date <= DateTime.Today)
+            .OrderBy(t => t.Deadline)
+            .ToList();
+
+        // 5. De fem närmaste deadlines, från imorgon och framåt, som inte är klara
+        upcoming = allTasks
+            .Where(t => t.Status != KanbanStatus.Done && t.Deadline.Date > DateTime.Today)
+            .OrderBy(t => t.Deadline)
+            .Take(5)
+            .ToList();
+    }
+
+    // Hälsningen ändras efter tid på dygnet
+    private static string Greeting() => DateTime.Now.Hour switch
+    {
+        < 10 => "God morgon",
+        < 12 => "God förmiddag",
+        < 18 => "God eftermiddag",
+        _ => "God kväll"
+    };
+
+    // "tisdag" blir "Tisdag"
+    private static string Capitalize(string text) => char.ToUpper(text[0]) + text[1..];
+
+    // Är deadline redan passerad?
+    private static bool IsOverdue(StudyTask task) => task.Deadline.Date < DateTime.Today;
+
+    // Hur stor andel av kursens uppgifter som är klara
+    private static int Progress(Course course)
+    {
+        if (course.Tasks.Count == 0) return 0;
+        var done = course.Tasks.Count(t => t.Status == KanbanStatus.Done);
+        return done * 100 / course.Tasks.Count;
+    }
+
+    // Svenska namn på examinationstyperna
+    private static string TypeName(ExaminationType type) => type switch
+    {
+        ExaminationType.Exam => "Tenta",
+        ExaminationType.Assignment => "Inlämning",
+        ExaminationType.Seminar => "Seminarium",
+        _ => "Övrigt"
+    };
+
+    // "idag", "imorgon" eller "om 9 dagar"
+    private static string DaysLeftText(DateTime date)
+    {
+        var days = (date.Date - DateTime.Today).Days;
+        return days switch
+        {
+            0 => "idag",
+            1 => "imorgon",
+            _ => $"om {days} dagar"
+        };
+    }
+}

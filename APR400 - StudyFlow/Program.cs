@@ -14,7 +14,11 @@ builder.Services.AddRazorComponents()
 builder.Services.AddDbContextFactory<StudyFlowContext>(options =>
     options.UseSqlite("Data Source=studyflow.db"));
 
+
+// Här "Registrerar" man så appen kan hitta och sidor kan be om den för att hämta infroamtionen
 builder.Services.AddScoped<TaskService>();  
+
+builder.Services.AddScoped<DashboardService>();
 
 var app = builder.Build();
 

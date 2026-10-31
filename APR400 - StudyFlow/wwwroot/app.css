@@ -1,3 +1,41 @@
+/*
+    Färger som är generella över hela StudyFlow
+*/
+
+:root {
+    /* Huvudfärger */
+    --primary: #C91920; /* DEN PRIMÄRA FÄRGEN, KNAPPAR LÄNKAR ETC */
+    --primary-dark: #A80F17; /* MÖRKARE RÖD VID HOVER */
+    --primary-light: #FCEBEC; /* LJUSROSA BAKGRUND */
+    --progress-bar: #F7DDDF; /* BAKGRUND PÅ PROGRESSBAR */
+
+    /* Bakgrundsfärger */
+    --bg-page: #F8F9FA; /* SIDBAKGRUNDEN */
+    --bg-card: #FFFFFF; /* VIT BAKGRUND PÅ KORT OCH RUTOR */
+
+    /* Text */
+    --text-main: #171B26; /* MÖRK TEXT */
+    --text-muted: #6B7280; /* SEKUNDÄR TEXT, DATUM ETC */
+
+    /* Fel och ta bort */
+    --danger: #A80F17;
+    --danger-soft: #FCEBEC;
+
+    /* Detaljer */
+    --border: #E5E7EB;
+    --shadow: 0 1px 4px rgba(0, 0, 0, .08);
+    --radius: 12px;
+
+}
+
+/* Färgerna man kan välja på en uppgift: pastell (--soft) och mörkare för detaljer (--accent, --text) */
+.color-red    { --accent: #C91920; --soft: #FCEBEC; --text: #A80F17; }
+.color-orange { --accent: #E8890C; --soft: #FFF4E5; --text: #8A5300; }
+.color-green  { --accent: #22A55B; --soft: #E8F7EE; --text: #1E6B45; }
+.color-blue   { --accent: #3B6FE0; --soft: #EAF1FF; --text: #1D4F91; }
+.color-purple { --accent: #A35BD6; --soft: #F3E8FB; --text: #5B2381; }
+
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }

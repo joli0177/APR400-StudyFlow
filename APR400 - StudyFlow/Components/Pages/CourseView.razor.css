@@ -1,110 +1,527 @@
+/* ========================================
+   STUDYFLOW – MINA KURSER
+   ======================================== */
+
+/* Sidans layout */
+
 .courses-page {
-    width: 100%;
-    max-width: 570px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding-top: 40px;
-    font-family: Arial, sans-serif;
+    padding: 32px;
+    color: #171923;
 }
 
-h1 {
-    text-align: center;
-    font-size: 40px;
-    font-weight: normal;
-    margin-bottom: 32px;
+
+/* ========================================
+   SIDHUVUD
+   ======================================== */
+
+.courses-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
 }
 
-.courses-list {
+.courses-header h1 {
+    font-size: 38px;
+    font-weight: 700;
+    margin: 0;
+    color: #171923;
+}
+
+.courses-header p {
+    color: #64748b;
+    font-size: 17px;
+    margin-top: 8px;
+}
+
+
+/* ========================================
+   KNAPPAR
+   ======================================== */
+
+.primary-button {
+    background: #cf1424;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.primary-button:hover {
+    background: #a9101d;
+}
+
+.secondary-button {
+    background: white;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 12px 20px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.secondary-button:hover {
+    background: #f1f5f9;
+}
+
+
+/* ========================================
+   STUDIEÖVERSIKT
+   ======================================== */
+
+.course-summary {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.summary-card {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 12px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+    min-width: 220px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
-.course-container {
-    width: 100%;
+.summary-card span {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
 }
 
-.course-row {
+.summary-card strong {
+    color: #171923;
+    font-size: 34px;
+    font-weight: 700;
+}
+
+
+/* ========================================
+   KURSKORT
+   ======================================== */
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fill,
+        minmax(280px, 1fr)
+    );
+    gap: 22px;
+}
+
+.course-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    transition:
+            transform 0.2s,
+            box-shadow 0.2s;
+}
+
+.course-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.card-top {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    width: 100%;
-    min-height: 44px;
-    border: 1px solid #777;
-    background-color: white;
+    gap: 12px;
+    margin-bottom: 24px;
 }
 
-.course-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 18px;
-    flex: 1;
-    min-width: 0;
-    padding: 11px 13px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    text-align: left;
-    font-size: 15px;
-    color: black;
-}
-
-.course-toggle span:first-child {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.arrow {
-    font-size: 12px;
-    flex-shrink: 0;
-}
-
-.delete-button {
+.course-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    margin-left: auto;
-    padding: 9px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    color: black;
+    background: #fcebed;
+    color: #cf1424;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    font-size: 24px;
 }
 
-.delete-button svg {
-    width: 22px;
-    height: 22px;
+.course-card h2 {
+    color: #171923;
+    font-size: 21px;
+    font-weight: 700;
+    margin: 0 0 8px;
+}
+
+.course-code {
+    color: #64748b;
+    font-size: 15px;
+    margin-bottom: 22px;
+}
+
+
+/* ========================================
+   REDIGERA OCH TA BORT
+   ======================================== */
+
+.card-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.edit-button {
+    background: #fcebed;
+    color: #cf1424;
+    border: none;
+    border-radius: 9px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.edit-button:hover {
+    background: #f8d5d9;
+}
+
+.delete-button {
+    background: #fff1f2;
+    color: #be123c;
+    border: 1px solid #fecdd3;
+    border-radius: 9px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+            background 0.2s,
+            border-color 0.2s;
 }
 
 .delete-button:hover {
-    color: #c62828;
+    background: #ffe4e6;
+    border-color: #fda4af;
 }
 
+
+/* ========================================
+   KURSINFORMATION
+   ======================================== */
+
 .course-details {
-    padding: 18px;
-    border: 1px solid #777;
-    border-top: none;
-    background-color: #fafafa;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.course-details div {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.course-details span,
+.pace-label span {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.course-details strong {
+    color: #171923;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* ========================================
+   STUDIETAKT
+   ======================================== */
+
+.study-pace {
+    padding-top: 16px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.pace-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.pace-label strong {
+    color: #cf1424;
     font-size: 14px;
 }
 
-.course-details p {
-    margin: 0 0 12px;
+.progress-track {
+    width: 100%;
+    height: 9px;
+    background: #f1f5f9;
+    border-radius: 20px;
+    overflow: hidden;
 }
 
-.course-details a {
-    color: black;
-    text-decoration: underline;
+.progress-fill {
+    height: 100%;
+    background: #cf1424;
+    border-radius: 20px;
+    transition: width 0.3s;
 }
 
-@media (max-width: 650px) {
+
+/* ========================================
+   SKAPA / REDIGERA KURS
+   ======================================== */
+
+.course-form {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 30px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.form-header h2 {
+    color: #171923;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.close-button {
+    background: transparent;
+    color: #64748b;
+    border: none;
+    border-radius: 8px;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 6px 10px;
+}
+
+.close-button:hover {
+    background: #e2e8f0;
+    color: #171923;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.form-field label {
+    display: block;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.form-field input {
+    width: 100%;
+    padding: 12px 14px;
+    background: white;
+    color: #171923;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.form-field input:focus {
+    outline: none;
+    border-color: #cf1424;
+    box-shadow: 0 0 0 3px rgba(207, 20, 36, 0.1);
+}
+
+.form-buttons {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 26px;
+}
+
+.error-message {
+    color: #be123c;
+    font-size: 14px;
+    margin-top: 16px;
+}
+
+
+/* ========================================
+   BEKRÄFTELSE VID RADERING
+   ======================================== */
+
+.delete-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.delete-dialog {
+    width: 100%;
+    max-width: 460px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+}
+
+.delete-dialog h2 {
+    color: #171923;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 16px;
+}
+
+.delete-dialog p {
+    color: #475569;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.delete-dialog strong {
+    color: #171923;
+}
+
+.delete-warning {
+    background: #fff1f2;
+    color: #9f1239;
+    border: 1px solid #fecdd3;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 14px;
+    margin-top: 18px;
+}
+
+.delete-confirm-button {
+    background: #cf1424;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.delete-confirm-button:hover {
+    background: #a9101d;
+}
+
+
+/* ========================================
+   TILLGÄNGLIGHET
+   ======================================== */
+
+button:focus-visible {
+    outline: 3px solid rgba(207, 20, 36, 0.45);
+    outline-offset: 3px;
+}
+
+
+/* ========================================
+   RESPONSIV DESIGN
+   ======================================== */
+
+@media (max-width: 800px) {
     .courses-page {
-        padding: 25px 15px;
+        padding: 24px;
     }
 
-    h1 {
+    .courses-header h1 {
         font-size: 32px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .courses-page {
+        padding: 18px;
+    }
+
+    .courses-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .courses-header h1 {
+        font-size: 28px;
+    }
+
+    .courses-header .primary-button {
+        width: 100%;
+    }
+
+    .course-summary {
+        flex-direction: column;
+    }
+
+    .summary-card {
+        min-width: 0;
+    }
+
+    .courses-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .course-card,
+    .course-form {
+        padding: 20px;
+    }
+
+    .delete-dialog {
+        padding: 22px;
+    }
+
+    .card-top {
+        align-items: flex-start;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .course-card,
+    .primary-button,
+    .edit-button,
+    .delete-button,
+    .progress-fill {
+        transition: none;
     }
 }

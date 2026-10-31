@@ -1,129 +1,379 @@
-@page "/courseview"
-@layout CourseLayout
+@page "/courses"
 @rendermode InteractiveServer
-@inject TaskService TaskService
+@using APR400___StudyFlow.Data
+@using Microsoft.EntityFrameworkCore
+@inject StudyFlowContext Db
 
 <PageTitle>Mina kurser</PageTitle>
 
 <div class="courses-page">
 
-    <h1>Mina kurser</h1>
+    <div class="courses-header">
+        <div>
+            <h1>Mina kurser</h1>
+            <p>Hantera dina kurser och följ dina studier.</p>
+        </div>
 
-    <div class="courses-list">
-
-        @foreach (var course in courses)
-        {
-            <div class="course-container">
-
-                <div class="course-row">
-
-                    <button class="course-toggle"
-                            @onclick="() => ToggleCourse(course.Id)">
-
-                        <span>
-                            @course.Name - @course.CourseCode
-                        </span>
-
-                        <span class="arrow">
-                            @(expandedCourseId == course.Id ? "▲" : "▼")
-                        </span>
-
-                    </button>
-
-                    <button class="delete-button"
-                            title="Ta bort kurs"
-                            @onclick="() => DeleteCourseAsync(course.Id)">
-
-                        <svg viewBox="0 0 24 24"
-                             fill="none"
-                             stroke="currentColor"
-                             stroke-width="2"
-                             stroke-linecap="round"
-                             stroke-linejoin="round">
-
-                            <path d="M3 6h18" />
-                            <path d="M8 6V4h8v2" />
-                            <path d="M5 6l1 15h12l1-15" />
-                            <path d="M10 10v7M14 10v7" />
-
-                        </svg>
-
-                    </button>
-
-                </div>
-
-                @if (expandedCourseId == course.Id)
-                {
-                    <div class="course-details">
-
-                        <p>
-                            <strong>Kursnamn:</strong>
-                            @course.Name
-                        </p>
-
-                        <p>
-                            <strong>Kurskod:</strong>
-                            @course.CourseCode
-                        </p>
-
-                        <a href="/kanban">
-                            Visa uppgifter
-                        </a>
-
-                    </div>
-                }
-
-            </div>
-        }
-
+        <button class="primary-button" @onclick="NewCourse">
+            + Ny kurs
+        </button>
     </div>
 
+    <div class="course-summary">
+        <div class="summary-card">
+            <span>AKTIVA KURSER</span>
+            <strong>@courses.Count</strong>
+        </div>
+    </div>
+
+    @if (showForm)
+    {
+        <div class="course-form">
+            <div class="form-header">
+                <h2>@(editingId == null ? "Skapa ny kurs" : "Redigera kurs")</h2>
+
+                <button class="close-button" @onclick="Cancel">
+                    ✕
+                </button>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-field">
+                    <label>Kursnamn</label>
+                    <input type="text"
+                           @bind="courseName"
+                           placeholder="Exempel: Databaser" />
+                </div>
+
+                <div class="form-field">
+                    <label>Kurskod</label>
+                    <input type="text"
+                           @bind="courseCode"
+                           placeholder="Exempel: DB200" />
+                </div>
+
+                <div class="form-field">
+                    <label>Startdatum</label>
+                    <input type="date" @bind="startDate" />
+                </div>
+
+                <div class="form-field">
+                    <label>Slutdatum</label>
+                    <input type="date" @bind="endDate" />
+                </div>
+
+                <div class="form-field">
+                    <label>Studietakt (%)</label>
+                    <input type="number"
+                           min="1"
+                           max="100"
+                           @bind="studyPace" />
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <p class="error-message">@errorMessage</p>
+            }
+
+            <div class="form-buttons">
+                <button class="primary-button" @onclick="SaveCourse">
+                    Spara kurs
+                </button>
+
+                <button class="secondary-button" @onclick="Cancel">
+                    Avbryt
+                </button>
+            </div>
+        </div>
+    }
+
+    @if (courseToDelete != null)
+    {
+        <div class="delete-overlay">
+            <div class="delete-dialog">
+                <h2>Ta bort kurs?</h2>
+
+                <p>
+                    Vill du verkligen ta bort kursen
+                    <strong>@courseToDelete.Name</strong>?
+                </p>
+
+                <p class="delete-warning">
+                    Åtgärden kan inte ångras.
+                    Uppgifter och examinationer som är kopplade
+                    till kursen kan också påverkas.
+                </p>
+
+                @if (!string.IsNullOrEmpty(deleteError))
+                {
+                    <p class="error-message">@deleteError</p>
+                }
+
+                <div class="form-buttons">
+                    <button class="delete-confirm-button"
+                            @onclick="DeleteCourse">
+                        Ja, ta bort
+                    </button>
+
+                    <button class="secondary-button"
+                            @onclick="CancelDelete">
+                        Avbryt
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+    
+    <div class="courses-grid">
+        @foreach (var course in courses)
+        {
+            <div class="course-card" @key="course.Id">
+
+                <div class="card-top">
+                    <div class="course-icon">
+                        📚
+                    </div>
+                    
+                    <div class="card-actions">
+                        <button class="edit-button"
+                                @onclick="() => EditCourse(course)">
+                            ✎ Redigera
+                        </button>
+
+                        <button class="delete-button"
+                                @onclick="() => ConfirmDelete(course)">
+                            Ta bort
+                        </button>
+                    </div>
+                    
+                </div>
+
+                <h2>@course.Name</h2>
+                <p class="course-code">@course.CourseCode</p>
+
+                <div class="course-details">
+                    <div>
+                        <span>Startdatum</span>
+                        <strong>@course.StartDate.ToString("yyyy-MM-dd")</strong>
+                    </div>
+
+                    <div>
+                        <span>Slutdatum</span>
+                        <strong>@course.EndDate.ToString("yyyy-MM-dd")</strong>
+                    </div>
+                </div>
+
+                <div class="study-pace">
+                    <div class="pace-label">
+                        <span>Studietakt</span>
+                        <strong>@course.StudyPace %</strong>
+                    </div>
+
+                    <div class="progress-track">
+                        <div class="progress-fill"
+                             style="width: @(Math.Clamp(course.StudyPace, 0, 100))%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
 
 @code {
-
-    // Lista som innehåller alla kurser
     private List<Course> courses = new();
 
-    // Vilken kurs som är utvecklad
-    private int? expandedCourseId;
+    private bool showForm = false;
+    private int? editingId;
 
-    // Körs när sidan laddas
+    private string courseName = "";
+    private string courseCode = "";
+
+    private DateTime startDate = DateTime.Today;
+    private DateTime endDate = DateTime.Today.AddMonths(3);
+
+    private int studyPace = 100;
+
+    private string errorMessage = "";
+
     protected override async Task OnInitializedAsync()
     {
-        await LoadCoursesAsync();
+        await LoadCourses();
     }
 
-    // Hämtar kurser från databasen
-    private async Task LoadCoursesAsync()
+    private async Task LoadCourses()
     {
-        courses = await TaskService.GetCoursesAsync();
+        courses = await Db.Courses
+            .AsNoTracking()
+            .OrderBy(c => c.Name)
+            .ToListAsync();
     }
 
-    // Öppnar eller stänger kursens information
-    private void ToggleCourse(int courseId)
+    private void NewCourse()
     {
-        if (expandedCourseId == courseId)
+        editingId = null;
+
+        courseName = "";
+        courseCode = "";
+
+        startDate = DateTime.Today;
+        endDate = DateTime.Today.AddMonths(3);
+
+        studyPace = 100;
+        errorMessage = "";
+        showForm = true;
+    }
+
+    private void EditCourse(Course course)
+    {
+        editingId = course.Id;
+
+        courseName = course.Name;
+        courseCode = course.CourseCode;
+
+        startDate = course.StartDate;
+        endDate = course.EndDate;
+
+        studyPace = course.StudyPace;
+
+        errorMessage = "";
+        showForm = true;
+    }
+
+    private async Task SaveCourse()
+    {
+        if (string.IsNullOrWhiteSpace(courseName))
         {
-            expandedCourseId = null;
+            errorMessage = "Du måste ange ett kursnamn.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(courseCode))
+        {
+            errorMessage = "Du måste ange en kurskod.";
+            return;
+        }
+
+        if (endDate.Date < startDate.Date)
+        {
+            errorMessage = "Slutdatum får inte vara före startdatum.";
+            return;
+        }
+
+        if (studyPace < 1 || studyPace > 100)
+        {
+            errorMessage = "Studietakten måste vara mellan 1 och 100 %.";
+            return;
+        }
+
+        if (editingId == null)
+        {
+            var course = new Course
+            {
+                Name = courseName.Trim(),
+                CourseCode = courseCode.Trim(),
+                StartDate = startDate,
+                EndDate = endDate,
+                StudyPace = studyPace
+            };
+
+            Db.Courses.Add(course);
         }
         else
         {
-            expandedCourseId = courseId;
+            var course = await Db.Courses.FindAsync(editingId.Value);
+
+            if (course == null)
+            {
+                errorMessage = "Kursen kunde inte hittas.";
+                return;
+            }
+
+            course.Name = courseName.Trim();
+            course.CourseCode = courseCode.Trim();
+            course.StartDate = startDate;
+            course.EndDate = endDate;
+            course.StudyPace = studyPace;
         }
+
+        await Db.SaveChangesAsync();
+
+        showForm = false;
+        errorMessage = "";
+
+        await LoadCourses();
     }
 
-    // Tar bort en kurs
-    private async Task DeleteCourseAsync(int courseId)
+    private void Cancel()
     {
-        // Kräver att metoden finns i TaskService
-        await TaskService.DeleteAsync(courseId);
+        showForm = false;
+        errorMessage = "";
+    }
+    
+    private Course? courseToDelete;
+    private string deleteError = "";
 
-        if (expandedCourseId == courseId)
+    private void ConfirmDelete(Course course)
+    {
+        courseToDelete = course;
+        deleteError = "";
+    }
+
+    private void CancelDelete()
+    {
+        courseToDelete = null;
+        deleteError = "";
+    }
+
+    private async Task DeleteCourse()
+    {
+        if (courseToDelete == null)
+            return;
+
+        try
         {
-            expandedCourseId = null;
-        }
+            var course = await Db.Courses
+                .FirstOrDefaultAsync(c => c.Id == courseToDelete.Id);
 
-        await LoadCoursesAsync();
+            if (course == null)
+            {
+                deleteError = "Kursen kunde inte hittas.";
+                return;
+            }
+
+            // Kontrollera om kursen har uppgifter
+            bool hasTasks = await Db.Tasks
+                .AnyAsync(t => t.CourseId == course.Id);
+
+            if (hasTasks)
+            {
+                deleteError = "Kursen innehåller uppgifter. Ta bort dessa först.";
+                return;
+            }
+            
+            bool hasExaminations = await Db.Examinations
+                .AnyAsync(e => e.CourseId == course.Id);
+
+            if (hasExaminations)
+            {
+                deleteError = "Kursen innehåller examinationer. Ta bort dessa först.";
+                return;
+            }
+
+            // Radera kursen
+            Db.Courses.Remove(course);
+
+            await Db.SaveChangesAsync();
+
+            courseToDelete = null;
+            deleteError = "";
+
+            await LoadCourses();
+        }
+        catch (Exception ex)
+        {
+            deleteError = "Kursen kunde inte tas bort: " + ex.Message;
+        }
     }
 }

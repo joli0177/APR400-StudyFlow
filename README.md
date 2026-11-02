@@ -48,6 +48,7 @@ För att köra StudyFlow behöver du ha .Net 10 SDK installerat
   
 <h3>4. Starta appen</h3>
   - dotnet run
+  - Öppna därefter addressen som visas i terminalen
   
 <h2>Viktigt information angående databasen</h2>
 Då StuyFlow anävnder sig utav SQLite databas som är en lokal databas så kommer hemsidan första gången användare startar upp att vara tom.

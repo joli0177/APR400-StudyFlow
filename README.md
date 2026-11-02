@@ -53,7 +53,9 @@ Detta innebär att inga kurser, examinationer eller uppgifter syns, och använda
 Men detta är inte ett problem då StudyFlow är en egen baserad hemsida där användaren och studenterna själva väljer vad som ska läggas in. 
 För att starta igång så börja med att Lägg till kurs under Mina kurser, så är det efter det enbart att börja lägga till uppgifter och examinationer. 
 <h2>Enhetstester (Unit Tests)</h2>
-Testerna i appen är främst fokus på dashboardens uppgiftöversikt, där testerna kontollerat vilka uppgifter som visas under **Behöver uppmärksamhet** samt **Kommande**.
+
+Testerna i appen är främst fokus på dashboardens uppgiftöversikt, där testerna kontollerat vilka uppgifter som visas under **Behöver uppmärksamhet** samt **Kommande** .
+
 Metoderna som testat är GetFocusTasks() och GetUpcomingTaks(). 
 **För att köra testerna:**
   - cd ..

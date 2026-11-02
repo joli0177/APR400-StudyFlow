@@ -8,10 +8,11 @@ Varje uppgift kopplas till den specifika kursen för att skapa en tydlig sturkut
 <h3>Dashborde - Startsidan</h3>
 Dashboarden är hemsidans startsida och ger studenten en samlad översikt kring de aktuella studierna. Detta för att kunna planera sitt arbete för dagen och veckan. 
 Här kan studenterna se:
- - Kurserna som pågår men också vilka som ska startas
- - Hur många uppgifter som ska göras
- - Vilka uppgifter som bör prioriteras samt kommande deadlines
- - Vilka examinationer som är inplanerade
+
+  - Kurserna som pågår men också vilka som ska startas
+  - Hur många uppgifter som ska göras
+  - Vilka uppgifter som bör prioriteras samt kommande deadlines
+  - Vilka examinationer som är inplanerade
 
 <h3>Kanban</h3>
 Kanban används för att struktura upp och för att skala ner de stora uppgiften till mindre och mer konkret vad måste göras.
@@ -24,16 +25,17 @@ Examinationer skapas i dashboraden men kopplas till en kurs, vilket gör det mö
 
 <h2>Teknik och ramverk</h2>
 StudyFlow är utvecklat i C# och har anävnt följande teknik:
- - .NET 10 SDK - utevklingsplatformen
- - Blazor - Ramverk frö att bygga användargänsnittet
- - Enity Framework Core (EF Core) - Hantering av databasåtkomst
- - SQLite - Lokal databas för lagring av kurser, examinatoiner och uppgifter
- - xUnit - Enhetstester
+
+- .NET 10 SDK - utevklingsplatformen
+- Blazor - Ramverk frö att bygga användargänsnittet
+- Enity Framework Core (EF Core) - Hantering av databasåtkomst
+- SQLite - Lokal databas för lagring av kurser, examinatoiner och uppgifter
+- xUnit - Enhetstester
  
 <h2>Installation och komma igång</h2>
 För att köra StudyFlow behöver du ha .Net 10 SDK installerat
 
-<h3>1. Installera verktyget för databasen:</h3>
+<h3>1. Installera verktyget för databasen</h3>
   - dotnet tool install --global dotnet-ef
   
 <h3>2. Hämta projektet</h3>

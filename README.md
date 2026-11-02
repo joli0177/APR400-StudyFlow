@@ -36,17 +36,21 @@ StudyFlow är utvecklat i C# och har anävnt följande teknik:
 För att köra StudyFlow behöver du ha .Net 10 SDK installerat
 
 <h3>1. Installera verktyget för databasen</h3>
+
   - dotnet tool install --global dotnet-ef
   
 <h3>2. Hämta projektet</h3>
+
   - git clone https://github.com/joli0177/APR400-StudyFlow.git
   - cd APR400-StudyFlow
   
 <h3>3. Skapa databasen</h3>
+
   - cd "APR400 - StudyFlow"
   - dotnet ef database update
   
 <h3>4. Starta appen</h3>
+
   - dotnet run
   - Öppna därefter addressen som visas i terminalen
   

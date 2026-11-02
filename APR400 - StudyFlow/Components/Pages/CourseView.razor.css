@@ -525,3 +525,35 @@ button:focus-visible {
         transition: none;
     }
 }
+
+/* ========================================
+   VISAR EXAMINATIONER PÅ KORTET
+   ======================================== */
+.course-exams {
+    margin-top: 1rem;
+    padding-top: .75rem;
+    border-top: 1px solid var(--border);
+}
+.exams-title {
+    font-size: .8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--text-muted);
+}
+.exams-empty {
+    margin: .4rem 0 0 0;
+    color: var(--text-muted);
+    font-size: .9rem;
+}
+.course-exam {
+    display: flex;
+    justify-content: space-between;
+    padding: .35rem 0;
+    font-size: .9rem;
+}
+/* Passerade examinationer blir gråa och överstrukna */
+.course-exam.past {
+    color: var(--text-muted);
+    text-decoration: line-through;
+}

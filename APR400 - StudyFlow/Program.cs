@@ -17,27 +17,15 @@ builder.Services.AddDbContextFactory<StudyFlowContext>(options =>
 
 // Här "Registrerar" man så appen kan hitta och sidor kan be om den för att hämta infroamtionen
 builder.Services.AddScoped<TaskService>();  
-
 builder.Services.AddScoped<DashboardService>();
+builder.Services.AddScoped<ExaminationService>();
+builder.Services.AddScoped<CourseService>();
 
 var app = builder.Build();
 
 // Allt ovanför här talar man om vad appen behöver
 // Allt under här är hur appen ska köras 
 
-// DETTA ÄR TILLFÄLLIG DATA FÖR ATT TESTA VAD SOM HÄNDER
-var dbFactory = app.Services.GetRequiredService<IDbContextFactory<StudyFlowContext>>();
-using (var db = dbFactory.CreateDbContext())
-{
-    if (!db.Courses.Any())
-    {
-        db.Courses.AddRange(
-            new Course { Name = "Webbutveckling", CourseCode = "APR400", StartDate = new DateTime(2026, 9, 1), EndDate = new DateTime(2027, 1, 15), StudyPace = 50 },
-            new Course { Name = "Databaser", CourseCode = "DB200", StartDate = new DateTime(2026, 9, 1), EndDate = new DateTime(2026, 11, 1), StudyPace = 50 }
-        );
-        db.SaveChanges();
-    }
-}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

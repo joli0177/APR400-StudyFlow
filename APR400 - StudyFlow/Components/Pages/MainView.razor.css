@@ -1,4 +1,4 @@
-﻿/* Hälsningen och datumet */
+﻿/* ================= HÄLSNINGEN OCH DATUMET ================= */
 .dash-header {
     display: flex;
     justify-content: space-between;
@@ -10,9 +10,6 @@
     font-size: 2.2rem;
     font-weight: 700;
     color: var(--text-main);
-}
-.greeting span {
-    color: var(--primary);
 }
 .subtitle {
     margin: .25rem 0 0 0;
@@ -41,10 +38,10 @@
     font-weight: 600;
 }
 
-/* Två kolumner */
+/* ================= LAYOUT: TVÅ KOLUMNER ================= */
 .dash-grid {
     display: grid;
-    grid-template-columns: 3fr 2fr;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
     gap: 1.5rem;
     align-items: start;
 }
@@ -56,6 +53,7 @@
     min-width: 0;
 }
 
+/* ================= GEMENSAMT FÖR ALLA PANELER ================= */
 /* En vit ruta, används för alla delar */
 .panel {
     background: var(--bg-card);
@@ -108,47 +106,20 @@
     border-radius: 999px;
     white-space: nowrap;
 }
+/* Länken "Visa alla" uppe till höger i panelen */
+.panel-link {
+    color: var(--primary);
+    font-size: .9rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
 .empty {
     color: var(--text-muted);
     margin: 0;
 }
 
-/* En rad i Kommande deadlines */
-.deadline-row {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: .6rem 0;
-    border-top: 1px solid var(--border);
-    color: inherit;
-    text-decoration: none;
-}
-.deadline-row:hover .chevron {
-    color: var(--primary);
-}
-
-/* Den lilla rutan med dag och månad */
-.date-block {
-    width: 52px;
-    height: 52px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    background: var(--primary-light);
-    color: var(--primary);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    line-height: 1.1;
-}
-.date-num {
-    font-size: 1.3rem;
-    font-weight: 700;
-}
-.date-month {
-    font-size: .8rem;
-}
-
+/* Titel och underrad, används i både uppgifter och examinationer */
 .deadline-info {
     flex: 1;
     min-width: 0;
@@ -165,6 +136,7 @@
     font-size: .9rem;
 }
 
+/* Pilen till höger på klickbara rader */
 .chevron {
     width: 20px;
     height: 20px;
@@ -172,122 +144,23 @@
     flex-shrink: 0;
 }
 
-/* En rad i Dagens fokus */
-.focus-row {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: .7rem 0;
-    border-top: 1px solid var(--border);
-    color: inherit;
-    text-decoration: none;
-}
-.focus-row:hover .chevron {
-    color: var(--primary);
-}
-
-/* Den tomma ringen till vänster */
-.focus-circle {
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
-    border: 2px solid var(--primary);
-    border-radius: 50%;
-}
-
-/* Taggen "Idag" / "Försenad" */
-.focus-tag {
-    background: var(--primary-light);
-    color: var(--primary);
-    font-size: .8rem;
-    font-weight: 600;
-    padding: .25rem .6rem;
-    border-radius: 6px;
-    white-space: nowrap;
-}
-/* Försenade blir lite tydligare */
-.focus-tag.overdue {
-    background: var(--primary);
-    color: white;
-}
-
-/* Länken "Visa alla" uppe till höger i panelen */
-.panel-link {
-    color: var(--primary);
-    font-size: .9rem;
-    font-weight: 600;
-    text-decoration: none;
-    white-space: nowrap;
-}
-
-/* Underrubrikerna i Mina uppgifter */
-.sub-heading {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    margin: 1.1rem 0 .25rem 0;
-    font-size: .75rem;
-    font-weight: 700;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-}
-.sub-count {
-    background: var(--bg-page);
-    color: var(--text-muted);
-    padding: .05rem .45rem;
+/* Progressbar, används i Tid kvar i kurserna */
+.progress {
+    height: 8px;
+    background: var(--progress-bar);
     border-radius: 999px;
-    font-size: .75rem;
+    overflow: hidden;
 }
-
-/* Kommande uppgifter får en grå ring, de brådskar inte */
-.focus-circle.muted {
-    border-color: var(--border);
-}
-
-/* Datumet till höger på kommande uppgifter */
-.row-date {
-    color: var(--text-muted);
-    font-size: .85rem;
-    white-space: nowrap;
-}
-
-/* En rad i Examinationer */
-.exam-row {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: .6rem 0;
-    border-top: 1px solid var(--border);
-}
-
-/* Taggen med typen till höger */
-.exam-tag {
-    font-size: .75rem;
-    font-weight: 600;
-    padding: .25rem .6rem;
-    border-radius: 6px;
-    white-space: nowrap;
-}
-/* Tentor sticker ut mest */
-.type-exam {
+.progress-fill {
+    height: 100%;
     background: var(--primary);
-    color: white;
-}
-.type-assignment {
-    background: var(--primary-light);
-    color: var(--primary);
-}
-.type-seminar,
-.type-other {
-    background: var(--bg-page);
-    color: var(--text-main);
+    border-radius: 999px;
 }
 
-/* ===== Studieöversikt ===== */
+/* ================= VÄNSTER: STUDIEÖVERSIKT ================= */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: .75rem;
     margin-top: 1rem;
 }
@@ -315,10 +188,6 @@
     width: 22px;
     height: 22px;
 }
-.stat-icon.green {
-    background: #E8F7EE;
-    color: #22A55B;
-}
 .stat-number {
     font-size: 2rem;
     font-weight: 700;
@@ -332,23 +201,29 @@
     font-size: .85rem;
 }
 
-/* ===== Progressbarer ===== */
-.progress {
-    height: 8px;
-    background: var(--progress-bar);
-    border-radius: 999px;
-    overflow: hidden;
+/* Uppgiftsframsteg, inuti Studieöversikt */
+.task-progress {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
 }
-.progress.large {
-    height: 16px;
+.task-progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: .75rem;
 }
-.progress-fill {
-    height: 100%;
-    background: var(--primary);
-    border-radius: 999px;
+.task-progress h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
 }
-
-/* ===== Totala studieframsteg ===== */
+.task-progress p {
+    margin: .15rem 0 0 0;
+    color: var(--text-muted);
+    font-size: .9rem;
+}
 .progress-summary {
     display: flex;
     flex-direction: column;
@@ -363,6 +238,23 @@
     color: var(--text-main);
     line-height: 1;
 }
+
+/* Baren i tre delar */
+.stacked-bar {
+    display: flex;
+    height: 14px;
+    background: var(--progress-bar);
+    border-radius: 999px;
+    overflow: hidden;
+}
+.seg {
+    height: 100%;
+}
+.seg.done  { background: var(--primary); }
+.seg.doing { background: #F5C27A; }
+.seg.todo  { background: #D1D5DB; }
+
+/* Förklaringen under baren */
 .legend {
     display: flex;
     gap: 1.5rem;
@@ -378,11 +270,11 @@
     margin-right: .35rem;
     vertical-align: -1px;
 }
-.dot.todo { background: #9CA3AF; }
+.dot.done         { background: var(--primary); }
 .dot.progress-dot { background: #F5C27A; }
-.dot.done { background: var(--primary); }
+.dot.todo         { background: #D1D5DB; }
 
-/* ===== Framsteg per kurs ===== */
+/* ================= VÄNSTER: TID KVAR I KURSERNA ================= */
 .course-row {
     display: flex;
     align-items: center;
@@ -412,6 +304,11 @@
     flex-direction: column;
     gap: .4rem;
 }
+/* Raden under kursnamnet: kurskod och vecka */
+.course-sub {
+    color: var(--text-muted);
+    font-size: .8rem;
+}
 .course-percent {
     display: flex;
     flex-direction: column;
@@ -421,4 +318,256 @@
 .course-percent span {
     color: var(--text-muted);
     font-size: .85rem;
+}
+
+/* ================= HÖGER: MINA UPPGIFTER ================= */
+/* Underrubrikerna "Behöver uppmärksamhet" och "Kommande" */
+.sub-heading {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin: 1.1rem 0 .25rem 0;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+.sub-count {
+    background: var(--bg-page);
+    color: var(--text-muted);
+    padding: .05rem .45rem;
+    border-radius: 999px;
+    font-size: .75rem;
+}
+
+/* En rad med en uppgift */
+.focus-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: .7rem 0;
+    border-top: 1px solid var(--border);
+    color: inherit;
+    text-decoration: none;
+}
+.focus-row:hover .chevron {
+    color: var(--primary);
+}
+
+/* Ringen till vänster: röd för det som brådskar, grå för kommande */
+.focus-circle {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+}
+.focus-circle.muted {
+    border-color: var(--border);
+}
+
+/* Taggen "Idag" / "Försenad" */
+.focus-tag {
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: .8rem;
+    font-weight: 600;
+    padding: .25rem .6rem;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+.focus-tag.overdue {
+    background: var(--primary);
+    color: white;
+}
+
+/* Datumet till höger på kommande uppgifter */
+.row-date {
+    color: var(--text-muted);
+    font-size: .85rem;
+    white-space: nowrap;
+}
+
+/* ================= HÖGER: EXAMINATIONER ================= */
+/* Plustecknet i hörnet */
+.icon-button {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.icon-button:hover {
+    background: var(--primary-dark);
+}
+
+/* En rad med en examination, går att klicka på */
+.exam-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: .6rem 0;
+    border-top: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background .15s;
+}
+.exam-row:hover {
+    background: var(--bg-page);
+}
+
+/* Den lilla rutan med dag och månad */
+.date-block {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: var(--primary-light);
+    color: var(--primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.1;
+}
+.date-num {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+.date-month {
+    font-size: .8rem;
+}
+
+/* Taggen med typen till höger, tentor sticker ut mest */
+.exam-tag {
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .25rem .6rem;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+.type-exam {
+    background: var(--primary);
+    color: white;
+}
+.type-assignment {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+.type-seminar,
+.type-other {
+    background: var(--bg-page);
+    color: var(--text-main);
+}
+
+/* ================= MODALEN FÖR EXAMINATIONER ================= */
+.exam-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, .45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 1000;
+}
+.exam-modal-box {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 520px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, .2);
+}
+.exam-modal-box h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.3rem;
+}
+
+/* Allt inuti EditForm behöver ::deep */
+.exam-modal-box ::deep .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .75rem;
+    margin-bottom: 1.25rem;
+}
+.exam-modal-box ::deep .field {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+}
+.exam-modal-box ::deep .field span {
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+.exam-modal-box ::deep .field-wide {
+    grid-column: 1 / -1;
+}
+.exam-modal-box ::deep input,
+.exam-modal-box ::deep select {
+    width: 100%;
+    padding: .5rem .75rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: .95rem;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+.exam-modal-box ::deep input:focus,
+.exam-modal-box ::deep select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+.exam-modal-box ::deep .validation-errors {
+    color: var(--danger);
+    padding-left: 1rem;
+}
+
+.exam-modal-box ::deep .modal-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.exam-modal-box ::deep .save-button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: .6rem 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.exam-modal-box ::deep .save-button:hover {
+    background: var(--primary-dark);
+}
+.exam-modal-box ::deep .cancel-button {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    padding: .6rem 1rem;
+    margin-right: .5rem;
+    cursor: pointer;
+}
+.exam-modal-box ::deep .delete-button {
+    background: none;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    border-radius: 10px;
+    padding: .6rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.exam-modal-box ::deep .delete-button:hover {
+    background: var(--danger-soft);
 }

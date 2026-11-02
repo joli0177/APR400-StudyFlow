@@ -1,11 +1,9 @@
-﻿#Heading-Title{
-    
-    
-}
+﻿/* Undertexten under rubriken */
 .page-subtitle {
     margin: .25rem 0 0 0;
     color: var(--text-muted);
 }
+
 /* Rubriken och knappen på samma rad */
 .page-header {
     display: flex;
@@ -13,47 +11,58 @@
     align-items: center;
 }
 
-/*Kursfitret*/
+/* Kursfiltret */
 .course-filter {
     margin-top: 1.5rem;
     padding: .5rem 2.25rem .5rem .75rem;
-    border: 1px solid #d0d4dc;
+    border: 1px solid var(--border);
     border-radius: 8px;
-    background: white;
+    background: var(--bg-card);
     font-size: .95rem;
     font-family: inherit;
     cursor: pointer;
     min-width: 200px;
 }
-    
 .course-filter:focus {
     outline: none;
-    border-color: var(--border);
-    box-shadow: 0 0 0 3px rgba(79, 124, 255, .15);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
 }
-
 
 /* Rutan runt om formuläret */
 .task-form {
-    background: white;
-    border: 1px solid #e2e4e9;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
     border-radius: 10px;
     padding: 1rem;
     max-width: 700px;
 }
 
-/*Rubriken för ny uppgift*/
+/* Rubriken för ny uppgift */
 #title-task {
     margin-bottom: 1rem;
     margin-top: 0;
 }
 
-/* Lägg fälten i två kolumner använder ::deep eftersom vi skriver i Blazor kan inte css hitta men med deep så hittar den*/
+/* Lägg fälten i två kolumner. ::deep behövs eftersom fälten skapas av Blazor-komponenter som CSS:en annars inte når */
 .task-form ::deep .describe-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: .75rem;
     margin-bottom: 1rem;
+    align-items: end;   /* rutorna sträcks inte ut, de ställer sig längst ner på raden */
+}
+
+/* Etiketten ovanför ett fält (Deadline) */
+.task-form ::deep .field {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+}
+.task-form ::deep .field span {
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--text-muted);
 }
 
 /* Alla inmatningsfält */
@@ -62,7 +71,7 @@
 .task-form ::deep textarea {
     width: 100%;
     padding: .5rem .75rem;
-    border: 1px solid #d0d4dc;
+    border: 1px solid var(--border);
     border-radius: 6px;
     font-size: .95rem;
     font-family: inherit;
@@ -81,14 +90,14 @@
 .task-form ::deep select:focus,
 .task-form ::deep textarea:focus {
     outline: none;
-    border-color: #4f7cff;
-    box-shadow: 0 0 0 3px rgba(79, 124, 255, .15);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
 }
 
 /* Knappen */
 .add-button {
-    background: var(--primary); /* Röd knapp*/
-    color: white; /* Texten på knappen*/
+    background: var(--primary); /* Röd knapp */
+    color: white;               /* Texten på knappen */
     border: 1px solid var(--primary);
     border-radius: 10px;
     padding: .6rem 1.25rem;
@@ -104,17 +113,17 @@
     border-color: var(--danger);
 }
 .task-form ::deep .validation-errors {
-    color: #e5484d;
+    color: var(--danger);
     padding-left: 1rem;
 }
 
-/* Den stora med alla tre rutor i */
+/* Den stora med alla tre kolumner i */
 .board {
     display: flex;
     gap: 1rem;
     margin: 1rem 0;
     padding: 1rem;
-    background: #f4f7fb;
+    background: var(--bg-page);
     border-radius: 15px;
 }
 
@@ -123,14 +132,15 @@
     flex: 1;
     min-width: 0;
     height: 35rem;
+    overflow-y: auto;    /* scrollbar om det blir för många kort */
     display: flex;
     flex-direction: column;
-    background: white;
+    background: var(--bg-card);
     border-radius: 12px;
     padding: .5rem 1rem 1rem 1rem;   /* uppe, höger, nere, vänster */
-    min-height: 300px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
+    box-shadow: var(--shadow);
 }
+
 /* Rubriken högst upp i kolumnen */
 .column-header {
     display: flex;
@@ -207,10 +217,10 @@
 
 /* Korten med uppgifter som hamnar i de tre kolumnerna och dess information */
 .card {
-    background: white;
+    background: var(--bg-card);
     border-radius: 12px;
     border-left: 10px solid var(--accent);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
+    box-shadow: var(--shadow);
     padding: .75rem .9rem;
     margin-bottom: .75rem;
     display: flex;
@@ -264,7 +274,7 @@
     display: flex;
     align-items: center;
     gap: .3rem;
-    color: #666;
+    color: var(--text-muted);
     font-size: .8rem;
     margin-top: .15rem;
 }
@@ -284,7 +294,7 @@
     min-width: 0;
 }
 
-/*taggen för kurskoden på kortet*/
+/* Taggen för kurskoden på kortet */
 .tag {
     background: var(--soft);
     color: var(--text);
@@ -295,12 +305,12 @@
     flex-shrink: 0;
 }
 
-/* Här är så det blir ... när en beskriving är för lång på kortet */
+/* Här blir det ... när en beskrivning är för lång på kortet */
 .card-desc {
     display: flex;
     align-items: center;
     gap: .3rem;
-    color: #666;
+    color: var(--text-muted);
     font-size: .8rem;
     min-width: 0;
 }
@@ -310,7 +320,7 @@
     text-overflow: ellipsis;
 }
 
-/* Lite effekter för kortens skull: pilarna syns när man håller musen över */
+/* Pilarna syns när man håller musen över kortet */
 .card-actions {
     display: flex;
     gap: .25rem;
@@ -328,7 +338,6 @@
     padding: .2rem .5rem;
     cursor: pointer;
 }
-
 
 /* Rutan som öppnas när man klickar på ett kort */
 .task-modal {
@@ -356,21 +365,21 @@
 
 .delete-button {
     background: none;
-    border: 1px solid #e5484d;
-    color: #e5484d;
+    border: 1px solid var(--danger);
+    color: var(--danger);
     border-radius: 10px;
     padding: .6rem 1rem;
     font-weight: 600;
     cursor: pointer;
 }
 .delete-button:hover {
-    background: #fdecec;
+    background: var(--danger-soft);
 }
 
 .cancel-button {
     background: none;
     border: none;
-    color: #555;
+    color: var(--text-muted);
     padding: .6rem 1rem;
     margin-right: .5rem;
     cursor: pointer;
@@ -399,12 +408,4 @@
 /* Den valda färgen får en ring runt sig */
 .color-swatch.selected {
     box-shadow: 0 0 0 3px white, 0 0 0 5px var(--accent);
-}
-
-.task-form ::deep .describe-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: .75rem;
-    margin-bottom: 1rem;
-    align-items: end;   /* NY: rutorna sträcks inte ut, de ställer sig längst ner på raden */
 }

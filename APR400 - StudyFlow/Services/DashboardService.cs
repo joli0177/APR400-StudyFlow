@@ -6,7 +6,7 @@ namespace APR400___StudyFlow.Services;
 
 public class DashboardService(IDbContextFactory<StudyFlowContext> factory)
 {
-    // Hämtar alla kurser med deras uppgifter, så kan dashboarden räkna ut allt den behöver
+    // Hämtar alla kurser från databasen med deras uppgifter, så kan dashboarden kan visa
     public async Task<List<Course>> GetCoursesWithTasksAsync()
     {
         using var db = await factory.CreateDbContextAsync();

@@ -1,13 +1,15 @@
 @page "/"
+@rendermode InteractiveServer
 @using System.Globalization
 @inject DashboardService DashboardService
+@inject ExaminationService ExaminationService
 
 <PageTitle>Dashboard</PageTitle>
 
-@* Hälsningen och dagens datum högst upp *@
+@* ================= HÄLSNINGEN OCH DATUMET ================= *@
 <div class="dash-header">
     <div>
-        <h1 class="greeting">@Greeting(), <span>Nellie</span> 👋</h1>
+        <h1 class="greeting">@Greeting() 👋</h1>
         <p class="subtitle">Här är din studieöversikt för idag.</p>
     </div>
 
@@ -23,18 +25,20 @@
     </div>
 </div>
 
-@* Två kolumner: vänster för översikt och framsteg, höger för uppgifter och examinationer *@
+@* ================= LAYOUT: TVÅ KOLUMNER ================= *@
 <div class="dash-grid">
 
+    @* ================= VÄNSTER KOLUMN ================= *@
     <div class="dash-left">
 
-        @* Studieöversikt: fyra siffror *@
+        @* ----------------- Studieöversikt ----------------- *@
         <section class="panel">
             <div class="panel-heading">
                 <h2>Studieöversikt</h2>
-                <p>En snabb överblick över dina kurser och uppgifter.</p>
+                <p>En sammanfattning av dina kurser och uppgifter.</p>
             </div>
 
+            @* Tre siffror: aktiva kurser, kvar att göra, försenade *@
             <div class="stats-grid">
                 <div class="stat-box">
                     <span class="stat-icon">
@@ -55,18 +59,8 @@
                             <path d="M16 13H8M16 17H8M10 9H8" />
                         </svg>
                     </span>
-                    <span class="stat-number">@totalTasks</span>
-                    <span class="stat-label">Totala uppgifter</span>
-                </div>
-
-                <div class="stat-box">
-                    <span class="stat-icon green">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M20 6 9 17l-5-5" />
-                        </svg>
-                    </span>
-                    <span class="stat-number">@doneTasks</span>
-                    <span class="stat-label">Klara uppgifter</span>
+                    <span class="stat-number">@(todoCount + inProgressCount)</span>
+                    <span class="stat-label">Kvar att göra</span>
                 </div>
 
                 <div class="stat-box">
@@ -77,56 +71,60 @@
                         </svg>
                     </span>
                     <span class="stat-number @(overdueTasks > 0 ? "danger" : "")">@overdueTasks</span>
-                    <span class="stat-label">Försenade uppgifter</span>
+                    <span class="stat-label">Försenade</span>
+                </div>
+            </div>
+
+            @* Uppgiftsframsteg: hur stor del av Kanban-uppgifterna som är klara *@
+            <div class="task-progress">
+                <div class="task-progress-top">
+                    <div>
+                        <h3>Uppgiftsframsteg</h3>
+                        <p>Hur stor del av uppgifterna i din Kanban som är klara.</p>
+                    </div>
+                    <div class="progress-summary">
+                        <span class="big-percent">@TotalPercent %</span>
+                        <span>@doneTasks av @totalTasks klara</span>
+                    </div>
+                </div>
+
+                @* En progressbar i tre delar: klara, pågår och att göra. Hmtar från Kanban *@
+                <div class="stacked-bar">
+                    <div class="seg done" style="width: @Share(doneTasks)%"></div>
+                    <div class="seg doing" style="width: @Share(inProgressCount)%"></div>
+                    <div class="seg todo" style="width: @Share(todoCount)%"></div>
+                </div>
+
+                <div class="legend">
+                    <span><i class="dot done"></i> Klara (@doneTasks)</span>
+                    <span><i class="dot progress-dot"></i> Pågår (@inProgressCount)</span>
+                    <span><i class="dot todo"></i> Att göra (@todoCount)</span>
                 </div>
             </div>
         </section>
 
-        @* Totala studieframsteg: en stor progressbar *@
-        <section class="panel">
-            <div class="panel-header">
-                <span class="panel-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 20V10M18 20V4M6 20v-4" />
-                    </svg>
-                </span>
-                <div class="panel-heading">
-                    <h2>Totala studieframsteg</h2>
-                    <p>Så här långt har du kommit med alla dina uppgifter.</p>
-                </div>
-                <div class="progress-summary">
-                    <span class="big-percent">@TotalPercent %</span>
-                    <span>@doneTasks av @totalTasks uppgifter klara</span>
-                </div>
-            </div>
-
-            <div class="progress large">
-                <div class="progress-fill" style="width: @TotalPercent%"></div>
-            </div>
-
-            <div class="legend">
-                <span><i class="dot todo"></i> Att göra (@todoCount)</span>
-                <span><i class="dot progress-dot"></i> Pågår (@inProgressCount)</span>
-                <span><i class="dot done"></i> Klara (@doneTasks)</span>
-            </div>
-        </section>
-
-        @* Framsteg per kurs: en rad per kurs *@
+        @* ----------------- Tid kvar i kurserna ----------------- *@
         <section class="panel">
             <div class="panel-header">
                 <span class="panel-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 10 12 5 2 10l10 5 10-5Z" />
-                        <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                        <path d="M5 22h14M5 2h14" />
+                        <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22" />
+                        <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2" />
                     </svg>
                 </span>
                 <div class="panel-heading">
-                    <h2>Framsteg per kurs</h2>
-                    <p>Så här ligger du till i dina kurser.</p>
+                    <h2>Tid kvar i kurserna</h2>
+                    <p>Se hur mycket tid som återstår i kursen.</p>
                 </div>
             </div>
 
-            @foreach (var course in courses)
+            @if (activeCourseList.Count == 0)
+            {
+                <p class="empty">Inga aktiva kurser just nu.</p>
+            }
+
+            @foreach (var course in activeCourseList)
             {
                 <div class="course-row">
                     <span class="course-icon">
@@ -138,12 +136,13 @@
                     <div class="course-info">
                         <strong>@course.Name</strong>
                         <div class="progress">
-                            <div class="progress-fill" style="width: @Progress(course)%"></div>
+                            <div class="progress-fill" style="width: @TimeProgress(course)%"></div>
                         </div>
+                        <span class="course-sub">@WeekText(course)</span>
                     </div>
                     <div class="course-percent">
-                        <strong>@Progress(course) %</strong>
-                        <span>@course.Tasks.Count(t => t.Status == KanbanStatus.Done) av @course.Tasks.Count</span>
+                        <strong>@TimeProgress(course) %</strong>
+                        <span>@TimeLeftText(course)</span>
                     </div>
                 </div>
             }
@@ -151,9 +150,10 @@
 
     </div>
 
+    @* ================= HÖGER KOLUMN ================= *@
     <div class="dash-right">
 
-        @* Mina uppgifter: allt som kommer från Kanban *@
+        @* ----------------- Mina uppgifter (från Kanban) ----------------- *@
         <section class="panel">
             <div class="panel-header">
                 <span class="panel-icon">
@@ -165,7 +165,7 @@
                 </span>
                 <div class="panel-heading">
                     <h2>Mina uppgifter</h2>
-                    <p>Från din Kanban.</p>
+                    <p>Försenade och kommande uppgifter från din Kanban.</p>
                 </div>
                 <a href="kanban" class="panel-link">Visa alla</a>
             </div>
@@ -219,7 +219,7 @@
             }
         </section>
 
-        @* Examinationer: tentor och inlämningar från kurserna *@
+        @* ----------------- Examinationer (tentor och inlämningar) ----------------- *@
         <section class="panel">
             <div class="panel-header">
                 <span class="panel-icon">
@@ -233,11 +233,20 @@
                     <p>Tentor och inlämningar från dina kurser.</p>
                 </div>
                 <span class="badge">@exams.Count st</span>
+
+                @* Det lilla plustecknet i hörnet *@
+                <button class="icon-button" title="Lägg till examination" @onclick="OpenNewExam">+</button>
             </div>
 
-            @foreach (var exam in exams.OrderBy(e => e.Date))
+            @if (exams.Count == 0)
             {
-                <div class="exam-row">
+                <p class="empty">Inga examinationer inlagda än. Tryck på + för att lägga till.</p>
+            }
+
+            @foreach (var exam in exams)
+            {
+                @* Klicka på en examination för att ändra eller ta bort den *@
+                <div class="exam-row" @onclick="() => OpenExam(exam)">
                     <div class="date-block">
                         <span class="date-num">@exam.Date.Day</span>
                         <span class="date-month">@exam.Date.ToString("MMM", sv).TrimEnd('.')</span>
@@ -255,16 +264,87 @@
 
 </div>
 
+@* ================= MODALEN FÖR EXAMINATIONER ================= *@
+@if (editExam is not null)
+{
+    <div class="exam-modal" @onclick="CloseExam">
+        <div class="exam-modal-box" @onclick:stopPropagation="true">
+            <h2>@(IsNewExam ? "Ny examination" : "Redigera examination")</h2>
+
+            <EditForm Model="editExam" OnValidSubmit="SaveExamAsync">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-grid">
+                    <label class="field field-wide">
+                        <span>Titel</span>
+                        <InputText @bind-Value="editExam.Title" placeholder="T.ex. Salstenta" />
+                    </label>
+
+                    <label class="field">
+                        <span>Kurs</span>
+                        <InputSelect @bind-Value="editExam.CourseId">
+                            @if (IsNewExam)
+                            {
+                                <option value="0">Välj kurs...</option>
+                            }
+                            @foreach (var c in courses)
+                            {
+                                <option value="@c.Id">@c.Name</option>
+                            }
+                        </InputSelect>
+                    </label>
+
+                    <label class="field">
+                        <span>Typ</span>
+                        <InputSelect @bind-Value="editExam.Type">
+                            @foreach (var t in Enum.GetValues<ExaminationType>())
+                            {
+                                <option value="@t">@TypeName(t)</option>
+                            }
+                        </InputSelect>
+                    </label>
+
+                    <label class="field">
+                        <span>Datum</span>
+                        <InputDate @bind-Value="editExam.Date" />
+                    </label>
+                </div>
+
+                <div class="modal-actions">
+                    @* Ta bort visas bara för examinationer som redan finns *@
+                    @if (!IsNewExam)
+                    {
+                        <button type="button" class="delete-button" @onclick="DeleteExamAsync">Ta bort</button>
+                    }
+                    else
+                    {
+                        <span></span>
+                    }
+                    <div>
+                        <button type="button" class="cancel-button" @onclick="CloseExam">Avbryt</button>
+                        <button type="submit" class="save-button">@(IsNewExam ? "Lägg till" : "Spara")</button>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
 @code {
+    // ================= VARIABLER =================
+
     // Svenska datum oavsett vilken dator appen körs på
     private static readonly CultureInfo sv = new("sv-SE");
 
     // Data från databasen
     private List<Course> courses = new();
+    private List<Course> activeCourseList = new();   // kurser som inte har slutat
     private List<StudyTask> focus = new();
     private List<StudyTask> upcoming = new();
+    private List<Examination> exams = new();
 
-    // Siffrorna till Studieöversikt och Totala studieframsteg
+    // Siffrorna till Studieöversikt och Uppgiftsframsteg
     private int activeCourses;
     private int totalTasks;
     private int doneTasks;
@@ -275,45 +355,101 @@
     // Andel klara av alla uppgifter, i procent. 0 om det inte finns några uppgifter.
     private int TotalPercent => totalTasks == 0 ? 0 : doneTasks * 100 / totalTasks;
 
-    // TILLFÄLLIGT: hårdkodade examinationer för att se designen.
-    // Byts mot riktig data från databasen när kurssidan kan lägga in examinationer.
-    private List<Examination> exams = new()
-    {
-        new() { Title = "Projektinlämning", Date = DateTime.Today.AddDays(9),  Type = ExaminationType.Assignment, Course = new() { Name = "Avancerad C#" } },
-        new() { Title = "Salstenta",        Date = DateTime.Today.AddDays(13), Type = ExaminationType.Exam,       Course = new() { Name = "Databaser" } },
-        new() { Title = "Seminarium",       Date = DateTime.Today.AddDays(16), Type = ExaminationType.Seminar,    Course = new() { Name = "Systemutveckling" } },
-        new() { Title = "Reflektion",       Date = DateTime.Today.AddDays(29), Type = ExaminationType.Assignment, Course = new() { Name = "Webbutveckling" } }
-    };
+    // Examinationen som är öppen i rutan (null = ingen ruta visas)
+    private Examination? editExam;
+
+    // En ny examination har inget Id än (0)
+    private bool IsNewExam => editExam?.Id == 0;
+
+    // ================= NÄR SIDAN LADDAS =================
 
     protected override async Task OnInitializedAsync()
     {
-        // 1. Hämta kurserna med deras uppgifter
+        // Hämtar kurserna med deras uppgifter från databasen
         courses = await DashboardService.GetCoursesWithTasksAsync();
 
-        // 2. Plocka ut alla uppgifter från alla kurser till en enda lista
+        // Tar fram alla uppgifter från alla kurser till en enda lista
         var allTasks = courses.SelectMany(c => c.Tasks).ToList();
 
-        // 3. Siffrorna till Studieöversikt och Totala studieframsteg
-        activeCourses = courses.Count(c => c.EndDate.Date >= DateTime.Today);
+        // Aktiva kurser: de som inte har slutat, den som slutar först överst
+        activeCourseList = courses
+            .Where(c => c.EndDate.Date >= DateTime.Today)
+            .OrderBy(c => c.EndDate)
+            .ToList();
+        activeCourses = activeCourseList.Count;
+
+        // Siffrorna till Studieöversikt och Uppgiftsframsteg
         totalTasks = allTasks.Count;
         doneTasks = allTasks.Count(t => t.Status == KanbanStatus.Done);
         todoCount = allTasks.Count(t => t.Status == KanbanStatus.ToDo);
         inProgressCount = allTasks.Count(t => t.Status == KanbanStatus.InProgress);
         overdueTasks = allTasks.Count(t => t.Status != KanbanStatus.Done && t.Deadline.Date < DateTime.Today);
 
-        // 4. Uppgifter som inte är klara och har deadline idag eller tidigare
-        focus = allTasks
-            .Where(t => t.Status != KanbanStatus.Done && t.Deadline.Date <= DateTime.Today)
-            .OrderBy(t => t.Deadline)
-            .ToList();
+        // UNIT TESTAR DENNA DEL - UNDER DashboardCalculator.CS
+        focus = DashboardCalculator.GetFocusTasks(allTasks, DateTime.Today);
+        
+        // UNIT TESTAR DENNA DEL - UNDER DashboardCalculator.CS
+       upcoming = DashboardCalculator.GetUpcomingTasks(allTasks, DateTime.Today);
 
-        // 5. De fem närmaste deadlines, från imorgon och framåt, som inte är klara
-        upcoming = allTasks
-            .Where(t => t.Status != KanbanStatus.Done && t.Deadline.Date > DateTime.Today)
-            .OrderBy(t => t.Deadline)
-            .Take(5)
-            .ToList();
+        // Hämtar kommande examinationer
+        await LoadExamAsync();
     }
+
+    // ================= EXAMINATIONER: LÄGGA TILL, ÄNDRA, TA BORT =================
+
+    private async Task LoadExamAsync()
+        => exams = await ExaminationService.GetUpcomingAsync();
+
+    // Öppnar rutan med en tom examination, två veckor fram som standard
+    private void OpenNewExam()
+    {
+        editExam = new Examination
+        {
+            Date = DateTime.Today.AddDays(14),
+            Type = ExaminationType.Exam
+        };
+    }
+
+    // Öppnar rutan med en KOPIA, så att listan inte ändras förrän man trycker Spara
+    private void OpenExam(Examination exam)
+    {
+        editExam = new Examination
+        {
+            Id = exam.Id,
+            Title = exam.Title,
+            Date = exam.Date, // Datum för när själva examinationen äger rum
+            Type = exam.Type,
+            CourseId = exam.CourseId
+        };
+    }
+
+    // Stänger rutan
+    private void CloseExam() => editExam = null;
+
+    // Sparar både nya och ändrade examinationer
+    private async Task SaveExamAsync()
+    {
+        if (editExam == null) return;
+
+        if (IsNewExam)
+            await ExaminationService.AddAsync(editExam);
+        else
+            await ExaminationService.UpdateAsync(editExam);
+
+        editExam = null;
+        await LoadExamAsync();
+    }
+
+    // Tar bort examinationen som är öppen
+    private async Task DeleteExamAsync()
+    {
+        if (editExam == null) return;
+        await ExaminationService.DeleteAsync(editExam.Id);
+        editExam = null;
+        await LoadExamAsync();
+    }
+
+    // ================= HJÄLPMETODER: TEXT OCH DATUM =================
 
     // Hälsningen ändras efter tid på dygnet
     private static string Greeting() => DateTime.Now.Hour switch
@@ -327,18 +463,7 @@
     // "tisdag" blir "Tisdag"
     private static string Capitalize(string text) => char.ToUpper(text[0]) + text[1..];
 
-    // Är deadline redan passerad?
-    private static bool IsOverdue(StudyTask task) => task.Deadline.Date < DateTime.Today;
-
-    // Hur stor andel av kursens uppgifter som är klara
-    private static int Progress(Course course)
-    {
-        if (course.Tasks.Count == 0) return 0;
-        var done = course.Tasks.Count(t => t.Status == KanbanStatus.Done);
-        return done * 100 / course.Tasks.Count;
-    }
-
-    // Svenska namn på examinationstyperna
+    // Översätter examinationstyperna till svenska
     private static string TypeName(ExaminationType type) => type switch
     {
         ExaminationType.Exam => "Tenta",
@@ -347,7 +472,7 @@
         _ => "Övrigt"
     };
 
-    // "idag", "imorgon" eller "om 9 dagar"
+    // Räknar ut antal dagar kvar och skriver t.ex. "idag", "imorgon" eller "om 9 dagar"
     private static string DaysLeftText(DateTime date)
     {
         var days = (date.Date - DateTime.Today).Days;
@@ -358,4 +483,51 @@
             _ => $"om {days} dagar"
         };
     }
+
+    // ================= HJÄLPMETODER: UPPGIFTER =================
+
+    // Är deadline redan passerad?
+    private static bool IsOverdue(StudyTask task) => task.Deadline.Date < DateTime.Today;
+
+    // Hur stor del av alla uppgifter en viss mängd är, i procent (till den delade baren)
+    private int Share(int count) => totalTasks == 0 ? 0 : count * 100 / totalTasks;
+
+    // ================= HJÄLPMETODER: KURSERNAS TID =================
+
+    // Hur stor del av kursens tid som har gått, 0–100 %
+    private static int TimeProgress(Course course)
+    {
+        var totalDays = (course.EndDate.Date - course.StartDate.Date).TotalDays;
+        if (totalDays <= 0) return 100;   // skydd mot division med noll
+
+        var daysPassed = (DateTime.Today - course.StartDate.Date).TotalDays;
+        return (int)Math.Clamp(daysPassed / totalDays * 100, 0, 100);
+    }
+
+    // "76 dagar kvar", "Sista dagen idag" eller "Startar 1 dec"
+    private static string TimeLeftText(Course course)
+    {
+        if (DateTime.Today < course.StartDate.Date)
+            return $"Startar {course.StartDate.ToString("d MMM", sv).TrimEnd('.')}";
+
+        var daysLeft = (course.EndDate.Date - DateTime.Today).Days;
+        return daysLeft switch
+        {
+            0 => "Sista dagen idag",
+            1 => "1 dag kvar",
+            _ => $"{daysLeft} dagar kvar"
+        };
+    }
+
+       // Skriver under progressbaren vilken vecka det är, t.ex. "APR400 · vecka 9 av 20"
+       private static string WeekText(Course course)
+       {
+           if (DateTime.Today < course.StartDate.Date)
+               return $"{course.CourseCode} · inte startad än";
+
+           var totalWeeks = Math.Max(1, (int)Math.Ceiling((course.EndDate.Date - course.StartDate.Date).TotalDays / 7));
+           var currentWeek = Math.Min((DateTime.Today - course.StartDate.Date).Days / 7 + 1, totalWeeks);
+           return $"{course.CourseCode} · vecka {currentWeek} av {totalWeeks}";
+       }
 }
+

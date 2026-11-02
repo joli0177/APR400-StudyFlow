@@ -1,8 +1,6 @@
 @page "/courses"
 @rendermode InteractiveServer
-@using APR400___StudyFlow.Data
-@using Microsoft.EntityFrameworkCore
-@inject StudyFlowContext Db
+@inject CourseService CourseService
 
 <PageTitle>Mina kurser</PageTitle>
 
@@ -101,8 +99,7 @@
 
                 <p class="delete-warning">
                     Åtgärden kan inte ångras.
-                    Uppgifter och examinationer som är kopplade
-                    till kursen kan också påverkas.
+                    Kursens examinationer tas också bort.
                 </p>
 
                 @if (!string.IsNullOrEmpty(deleteError))
@@ -125,7 +122,7 @@
         </div>
     }
     
-    <div class="courses-grid">
+       <div class="courses-grid">
         @foreach (var course in courses)
         {
             <div class="course-card" @key="course.Id">
@@ -134,7 +131,7 @@
                     <div class="course-icon">
                         📚
                     </div>
-                    
+
                     <div class="card-actions">
                         <button class="edit-button"
                                 @onclick="() => EditCourse(course)">
@@ -146,7 +143,6 @@
                             Ta bort
                         </button>
                     </div>
-                    
                 </div>
 
                 <h2>@course.Name</h2>
@@ -169,18 +165,35 @@
                         <span>Studietakt</span>
                         <strong>@course.StudyPace %</strong>
                     </div>
-
                     <div class="progress-track">
                         <div class="progress-fill"
                              style="width: @(Math.Clamp(course.StudyPace, 0, 100))%">
                         </div>
                     </div>
                 </div>
+
+                @* NY: kursens examinationer, även passerade *@
+                <div class="course-exams">
+                    <span class="exams-title">Examinationer (@course.Examinations.Count)</span>
+
+                    @if (course.Examinations.Count == 0)
+                    {
+                        <p class="exams-empty">Inga examinationer inlagda.</p>
+                    }
+
+                    @foreach (var exam in course.Examinations.OrderBy(e => e.Date))
+                    {
+                        <div class="course-exam @(exam.Date.Date < DateTime.Today ? "past" : "")">
+                            <span>@exam.Title</span>
+                            <span>@exam.Date.ToString("d MMM")</span>
+                        </div>
+                    }
+                </div>
+
             </div>
         }
     </div>
 </div>
-
 @code {
     private List<Course> courses = new();
 
@@ -204,10 +217,7 @@
 
     private async Task LoadCourses()
     {
-        courses = await Db.Courses
-            .AsNoTracking()
-            .OrderBy(c => c.Name)
-            .ToListAsync();
+        courses = await CourseService.GetAllAsync();
     }
 
     private void NewCourse()
@@ -267,37 +277,29 @@
             return;
         }
 
+        var course = new Course
+        {
+            Id = editingId ?? 0,
+            Name = courseName.Trim(),
+            CourseCode = courseCode.Trim(),
+            StartDate = startDate,
+            EndDate = endDate,
+            StudyPace = studyPace
+        };
+
         if (editingId == null)
         {
-            var course = new Course
-            {
-                Name = courseName.Trim(),
-                CourseCode = courseCode.Trim(),
-                StartDate = startDate,
-                EndDate = endDate,
-                StudyPace = studyPace
-            };
-
-            Db.Courses.Add(course);
+            await CourseService.AddAsync(course);
         }
         else
         {
-            var course = await Db.Courses.FindAsync(editingId.Value);
-
-            if (course == null)
+            var found = await CourseService.UpdateAsync(course);
+            if (!found)
             {
                 errorMessage = "Kursen kunde inte hittas.";
                 return;
             }
-
-            course.Name = courseName.Trim();
-            course.CourseCode = courseCode.Trim();
-            course.StartDate = startDate;
-            course.EndDate = endDate;
-            course.StudyPace = studyPace;
         }
-
-        await Db.SaveChangesAsync();
 
         showForm = false;
         errorMessage = "";
@@ -333,38 +335,15 @@
 
         try
         {
-            var course = await Db.Courses
-                .FirstOrDefaultAsync(c => c.Id == courseToDelete.Id);
-
-            if (course == null)
-            {
-                deleteError = "Kursen kunde inte hittas.";
-                return;
-            }
-
             // Kontrollera om kursen har uppgifter
-            bool hasTasks = await Db.Tasks
-                .AnyAsync(t => t.CourseId == course.Id);
-
-            if (hasTasks)
+            if (await CourseService.HasTasksAsync(courseToDelete.Id))
             {
                 deleteError = "Kursen innehåller uppgifter. Ta bort dessa först.";
                 return;
             }
-            
-            bool hasExaminations = await Db.Examinations
-                .AnyAsync(e => e.CourseId == course.Id);
 
-            if (hasExaminations)
-            {
-                deleteError = "Kursen innehåller examinationer. Ta bort dessa först.";
-                return;
-            }
-
-            // Radera kursen
-            Db.Courses.Remove(course);
-
-            await Db.SaveChangesAsync();
+            // Radera kursen (examinationerna följer med via Cascade)
+            await CourseService.DeleteAsync(courseToDelete.Id);
 
             courseToDelete = null;
             deleteError = "";

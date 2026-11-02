@@ -104,7 +104,11 @@
 
                 @if (!string.IsNullOrEmpty(deleteError))
                 {
-                    <p class="error-message">@deleteError</p>
+                    <div class="delete-error">
+                        <strong>Kursen kan inte tas bort</strong>
+                        <p>@deleteError</p>
+                        <a href="kanban">Gå till Kanban →</a>
+                    </div>
                 }
 
                 <div class="form-buttons">

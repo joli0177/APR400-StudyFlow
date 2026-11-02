@@ -14,6 +14,7 @@ public class ExaminationService(IDbContextFactory<StudyFlowContext> factory)
 
         return await db.Examinations
             .Include(e => e.Course)
+            .AsNoTracking()
             .Where(e => e.Date >= today)
             .OrderBy(e => e.Date)
             .ToListAsync();

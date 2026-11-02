@@ -12,6 +12,7 @@ public class DashboardService(IDbContextFactory<StudyFlowContext> factory)
         using var db = await factory.CreateDbContextAsync();
         return await db.Courses
             .Include(c => c.Tasks)
+            .AsNoTracking()
             .OrderBy(c => c.Name)
             .ToListAsync();
     }

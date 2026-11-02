@@ -409,3 +409,8 @@
 .color-swatch.selected {
     box-shadow: 0 0 0 3px white, 0 0 0 5px var(--accent);
 }
+/* Försenade uppgifter får rött datum */
+.card-date.overdue {
+    color: var(--danger);
+    font-weight: 600;
+}

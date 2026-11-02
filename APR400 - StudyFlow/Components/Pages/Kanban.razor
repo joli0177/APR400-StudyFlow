@@ -74,7 +74,7 @@
                             @*Här är all info i kortet såsom rubrik, datum samt ikonen*@
                             <div class="card-info">
                                 <div class="card-title">@task.Title</div>
-                                <div class="card-date">
+                                <div class="card-date @(task.Status != KanbanStatus.Done && task.Deadline.Date < DateTime.Today ? "overdue" : "")">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <rect x="3" y="4" width="18" height="18" rx="2" />
                                         <path d="M16 2v4M8 2v4M3 10h18" />
@@ -98,8 +98,8 @@
 
                         @*Här är den nedre delen av uppgiftsrutan där den får taggen, samt den korta beskrivningen och att det blir som en ikon*@
                         <div class="card-footer">
-                            <span class="tag">@task.Course?.CourseCode</span>
-
+                            <span class="tag" title="@task.Course?.Name">@task.Course?.CourseCode</span>
+                            
                             @if (!string.IsNullOrWhiteSpace(task.Description))
                             {
                                 <span class="card-desc">

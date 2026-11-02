@@ -11,7 +11,7 @@ public class TaskService(IDbContextFactory<StudyFlowContext> factory)
     {
         using var db = await factory.CreateDbContextAsync();
 
-        var query = db.Tasks.Include(t => t.Course).AsQueryable();
+        var query = db.Tasks.Include(t => t.Course).AsNoTracking().AsQueryable();
         if (courseId is not null)
             query = query.Where(t => t.CourseId == courseId);
 

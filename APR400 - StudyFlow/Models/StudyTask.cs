@@ -19,5 +19,14 @@ public class StudyTask
     public int CourseId { get; set; }
     public Course?  Course { get; set; }
     
+    // Sparas som siffra (precis som Color), se förklaringen om migrationen
+    public TaskPriority Priority { get; set; } = TaskPriority.Normal;
+    
+    // Försenad = inte klar och deadline har passerat (idag räknas INTE som försenad).
+    // En metod (inte en property) så att EF inte försöker spara den i databasen,
+    // och så att "today" kan skickas in i testerna. Används av Kanban och PriorityFirstSort.
+    public bool IsOverdue(DateTime today) =>
+        Status != KanbanStatus.Done && Deadline.Date < today.Date;
+    
    
 }

@@ -11,8 +11,16 @@
     align-items: center;
 }
 
-/* Kursfiltret */
-.course-filter {
+/* Raden med kursfilter och sortering */
+.board-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+}
+
+/* Kursfiltret och sorteringen ser likadana ut */
+.course-filter,
+.sort-select {
     margin-top: 1.5rem;
     padding: .5rem 2.25rem .5rem .75rem;
     border: 1px solid var(--border);
@@ -23,7 +31,8 @@
     cursor: pointer;
     min-width: 200px;
 }
-.course-filter:focus {
+.course-filter:focus,
+.sort-select:focus {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 3px var(--primary-light);

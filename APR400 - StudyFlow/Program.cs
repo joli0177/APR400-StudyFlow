@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using APR400___StudyFlow.Data;
 using APR400___StudyFlow.Services;   
 using APR400___StudyFlow.Models;
+using APR400___StudyFlow.Services.Sorting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,18 @@ builder.Services.AddScoped<TaskService>();
 builder.Services.AddScoped<DashboardService>();
 builder.Services.AddScoped<ExaminationService>();
 builder.Services.AddScoped<CourseService>();
+builder.Services.AddSingleton<ITaskSortStrategy, ColorSort>();
+
+// Sorteringarna på Kanban (Strategy-mönstret).
+// Alla registreras som samma gränssnitt, så Kanban kan be om IEnumerable<ITaskSortStrategy> och få alla.
+// Ordningen här = ordningen i dropdownen, och den första blir standard.
+// Singleton: klasserna har inget tillstånd, så en instans räcker för hela appen.
+builder.Services.AddSingleton<ITaskSortStrategy, PriorityFirstSort>();
+builder.Services.AddSingleton<ITaskSortStrategy, DeadlineSort>();
+builder.Services.AddSingleton<ITaskSortStrategy, NewestFirstSort>();
+builder.Services.AddSingleton<ITaskSortStrategy, OldestFirstSort>();
+builder.Services.AddSingleton<ITaskSortStrategy, CourseSort>();
+builder.Services.AddSingleton<ITaskSortStrategy, TitleSort>();
 
 var app = builder.Build();
 

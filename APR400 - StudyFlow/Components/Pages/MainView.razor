@@ -1,8 +1,7 @@
 @page "/"
 @rendermode InteractiveServer
 @using System.Globalization
-@inject DashboardService DashboardService
-@inject ExaminationService ExaminationService
+@inject DashboardFacade DashboardFacade
 
 <PageTitle>Dashboard</PageTitle>
 
@@ -365,40 +364,29 @@
 
     protected override async Task OnInitializedAsync()
     {
-        // Hämtar kurserna med deras uppgifter från databasen
-        courses = await DashboardService.GetCoursesWithTasksAsync();
+        var data = await DashboardFacade.GetDashboardDataAsync();
 
-        // Tar fram alla uppgifter från alla kurser till en enda lista
-        var allTasks = courses.SelectMany(c => c.Tasks).ToList();
+        courses = data.Courses;
+        activeCourseList = data.ActiveCourseList;
 
-        // Aktiva kurser: de som inte har slutat, den som slutar först överst
-        activeCourseList = courses
-            .Where(c => c.EndDate.Date >= DateTime.Today)
-            .OrderBy(c => c.EndDate)
-            .ToList();
-        activeCourses = activeCourseList.Count;
+        focus = data.Focus;
+        upcoming = data.Upcoming;
+        exams = data.Exams;
 
-        // Siffrorna till Studieöversikt och Uppgiftsframsteg
-        totalTasks = allTasks.Count;
-        doneTasks = allTasks.Count(t => t.Status == KanbanStatus.Done);
-        todoCount = allTasks.Count(t => t.Status == KanbanStatus.ToDo);
-        inProgressCount = allTasks.Count(t => t.Status == KanbanStatus.InProgress);
-        overdueTasks = allTasks.Count(t => t.Status != KanbanStatus.Done && t.Deadline.Date < DateTime.Today);
-
-        // UNIT TESTAR DENNA DEL - UNDER DashboardCalculator.CS
-        focus = DashboardCalculator.GetFocusTasks(allTasks, DateTime.Today);
-        
-        // UNIT TESTAR DENNA DEL - UNDER DashboardCalculator.CS
-       upcoming = DashboardCalculator.GetUpcomingTasks(allTasks, DateTime.Today);
-
-        // Hämtar kommande examinationer
-        await LoadExamAsync();
+        activeCourses = data.ActiveCourses;
+        totalTasks = data.TotalTasks;
+        doneTasks = data.DoneTasks;
+        todoCount = data.TodoCount;
+        inProgressCount = data.InProgressCount;
+        overdueTasks = data.OverdueTasks;
     }
 
     // ================= EXAMINATIONER: LÄGGA TILL, ÄNDRA, TA BORT =================
 
     private async Task LoadExamAsync()
-        => exams = await ExaminationService.GetUpcomingAsync();
+    {
+        exams = await DashboardFacade.GetUpcomingExamsAsync();
+    }
 
     // Öppnar rutan med en tom examination, två veckor fram som standard
     private void OpenNewExam()
@@ -432,9 +420,9 @@
         if (editExam == null) return;
 
         if (IsNewExam)
-            await ExaminationService.AddAsync(editExam);
+            await DashboardFacade.AddExamAsync(editExam);
         else
-            await ExaminationService.UpdateAsync(editExam);
+            await DashboardFacade.UpdateExamAsync(editExam);
 
         editExam = null;
         await LoadExamAsync();
@@ -444,7 +432,7 @@
     private async Task DeleteExamAsync()
     {
         if (editExam == null) return;
-        await ExaminationService.DeleteAsync(editExam.Id);
+        await DashboardFacade.DeleteExamAsync(editExam.Id);
         editExam = null;
         await LoadExamAsync();
     }

@@ -21,6 +21,7 @@ builder.Services.AddScoped<TaskService>();
 builder.Services.AddScoped<DashboardService>();
 builder.Services.AddScoped<ExaminationService>();
 builder.Services.AddScoped<CourseService>();
+builder.Services.AddScoped<DashboardFacade>();
 builder.Services.AddSingleton<ITaskSortStrategy, ColorSort>();
 
 // Sorteringarna på Kanban (Strategy-mönstret).
